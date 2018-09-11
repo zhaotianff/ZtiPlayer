@@ -2,7 +2,9 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:aplayer="clr-namespace:AxAPlayer3Lib;assembly=AxInterop.APlayer3Lib"
-        Title="ZtiPlayer" Height="720" Width="1080" Icon="logo.png">
+        xmlns:local="clr-namespace:ZtiPlayer"
+        Title="ZtiPlayer" Height="720" Width="1080" Icon="logo.png" WindowStartupLocation="CenterScreen"
+        >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -14,13 +16,43 @@
         </Grid.ColumnDefinitions>
         
         <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
             <WindowsFormsHost>
                 <aplayer:AxPlayer x:Name="player"/>
             </WindowsFormsHost>
+            
+            <ListBox Grid.Column="1" Width="300" Background="Transparent" BorderBrush="Transparent"></ListBox>
+        </Grid>
+
+
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0">
+                <Slider Margin="10,10,10,0"></Slider>               
+            </Grid>
+            
+            <Grid Grid.Row="1" >
+                <Grid Width="250">
+                    <local:ImageButton Width="65" Height="65" Image="../Icon/play.png" />
+                    <local:ImageButton Width="60" Height="60" Image="../Icon/previous.png" HorizontalAlignment="Left"/>
+                    <local:ImageButton Width="60" Height="60" Image="../Icon/next.png" HorizontalAlignment="Right"/>
+                </Grid>
+                
+                <Grid Width="600">
+                    <Label HorizontalAlignment="Left" Content="0:0:0/1:30:34(正在缓冲)" VerticalContentAlignment="Center"/>
+                </Grid>
+                
+                <local:ImageButton Width="60" Height="60" HorizontalAlignment="Right" Image="../Icon/list.png" Margin="0,0,10,0"/>
+            </Grid>
         </Grid>
         
-        <Canvas Grid.Row="1" Grid.Column="0">
-            
-        </Canvas>
+        
     </Grid>
 </Window>

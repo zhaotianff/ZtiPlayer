@@ -23,7 +23,7 @@ namespace ZtiPlayer
         {
             InitializeComponent();
 
-            SetBackground("");
+            //SetBackground("");
         }
 
         public void SetBackground(string filePath)
