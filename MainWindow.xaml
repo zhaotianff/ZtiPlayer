@@ -3,12 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:aplayer="clr-namespace:AxAPlayer3Lib;assembly=AxInterop.APlayer3Lib"
         xmlns:local="clr-namespace:ZtiPlayer"
-        Title="ZtiPlayer" Height="720" Width="1080" Icon="logo.png" WindowStartupLocation="CenterScreen"
-        >
+        Title="ZtiPlayer" Height="720" Width="1080" Icon="logo.png" WindowStartupLocation="CenterScreen" StateChanged="Window_StateChanged"      
+        KeyDown="Window_KeyDown">
+    <Window.Resources>
+        <Storyboard x:Key="ShowVideoListAnimation">
+            <DoubleAnimation Storyboard.TargetName="list_Video" Storyboard.TargetProperty="Width" To="300" Duration="0:0:0.5"/>
+        </Storyboard>
+        
+        <Storyboard x:Key="HideVideoListAnimation">
+            <DoubleAnimation Storyboard.TargetName="list_Video" Storyboard.TargetProperty="Width" To="0" Duration="0:0:0.5"/>
+        </Storyboard>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="120"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -24,11 +33,20 @@
                 <aplayer:AxPlayer x:Name="player"/>
             </WindowsFormsHost>
             
-            <ListBox Grid.Column="1" Width="300" Background="Transparent" BorderBrush="Transparent"></ListBox>
+            <ListBox Grid.Column="1" Width="300" Background="Transparent" BorderBrush="Transparent" Name="list_Video">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}"/>
+                            <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Url}" FontSize="10"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>             
+            </ListBox>
         </Grid>
 
 
-        <Grid Grid.Row="1" Grid.Column="0">
+        <Grid Grid.Row="1" Grid.Column="0" Name="grid_Function" Height="120">
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition/>
@@ -49,7 +67,7 @@
                     <Label HorizontalAlignment="Left" Content="0:0:0/1:30:34(正在缓冲)" VerticalContentAlignment="Center"/>
                 </Grid>
                 
-                <local:ImageButton Width="60" Height="60" HorizontalAlignment="Right" Image="../Icon/list.png" Margin="0,0,10,0"/>
+                <local:ImageButton Width="60" Height="60" HorizontalAlignment="Right" Image="../Icon/list.png" Margin="0,0,10,0" x:Name="btn_List" Click="ImageButton_Click"/>
             </Grid>
         </Grid>
         
