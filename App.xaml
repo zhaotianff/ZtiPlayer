@@ -5,9 +5,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Style/WindowStyle.xaml"/>
                 <ResourceDictionary Source="Themes/Generic.xaml"/>
                 
                 <ResourceDictionary Source="Style/ListBoxItem.xaml"/>
+               
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

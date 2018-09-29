@@ -34,15 +34,56 @@ namespace ZtiPlayer
         {
             showVideoListAnimation = (Storyboard)this.TryFindResource("ShowVideoListAnimation");
             hideVideoListAnimation = (Storyboard)this.TryFindResource("HideVideoListAnimation");
-            //SetBackground("");
+            SetBackground("");
             LoadDemoData();
+
+            InitializeCommands();
+        }
+
+        private void InitializeCommands()
+        {
+            CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, CloseWindow));
+            CommandBindings.Add(new CommandBinding(SystemCommands.MaximizeWindowCommand, MaximizeWindow, CanResizeWindow));
+            CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand, MinimizeWindow, CanMinimizeWindow));
+            CommandBindings.Add(new CommandBinding(SystemCommands.RestoreWindowCommand, RestoreWindow, CanResizeWindow));
+        }
+
+        private void CanResizeWindow(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = ResizeMode == ResizeMode.CanResize || ResizeMode == ResizeMode.CanResizeWithGrip;
+        }
+
+        private void CanMinimizeWindow(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = ResizeMode != ResizeMode.NoResize;
+        }
+
+        private void CloseWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.Close();            
+        }
+
+        private void MaximizeWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            SystemCommands.MaximizeWindow(this);
+        }
+
+        private void MinimizeWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            SystemCommands.MinimizeWindow(this);
+        }
+
+        private void RestoreWindow(object sender, ExecutedRoutedEventArgs e)
+        {
+            SystemCommands.RestoreWindow(this);
         }
 
         public void SetBackground(string filePath)
         {
             if(string.IsNullOrEmpty(filePath))
             {
-                player.SetCustomLogo(Properties.Resources.background.GetHbitmap().ToInt32());
+                player.SetCustomLogo(-1);       
+                //player.SetConfig((int)ConfigInterface.LogoSettings, "11119540;50;50");       
             }
             else
             {
