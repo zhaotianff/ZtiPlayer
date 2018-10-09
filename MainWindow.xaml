@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:aplayer="clr-namespace:AxAPlayer3Lib;assembly=AxInterop.APlayer3Lib"
         xmlns:local="clr-namespace:ZtiPlayer"
+        xmlns:winform="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         Title="ZtiPlayer" Height="720" Width="1080" Icon="logo.png" WindowStartupLocation="CenterScreen" StateChanged="Window_StateChanged"      
         KeyDown="Window_KeyDown" Style="{StaticResource newStyle}">
     <Window.Resources>
@@ -14,12 +15,6 @@
             <DoubleAnimation Storyboard.TargetName="list_Video" Storyboard.TargetProperty="Width" To="0" Duration="0:0:0.5"/>
         </Storyboard>
     </Window.Resources>
-    <Window.Background>
-        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-            <GradientStop Color="#FF6C6C6C"/>
-            <GradientStop Color="#FFCBBDBD" Offset="1"/>
-        </LinearGradientBrush>
-    </Window.Background>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -36,15 +31,17 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <WindowsFormsHost>
-                <aplayer:AxPlayer x:Name="player"/>
+                <winform:Panel x:Name="panel">
+                    
+                </winform:Panel>
             </WindowsFormsHost>
 
-            <ListBox Grid.Column="1" Width="300" Background="Transparent" BorderBrush="Transparent" Name="list_Video">
+            <ListBox Grid.Column="1" Width="300" Background="Transparent" BorderBrush="Transparent" Name="list_Video" MouseDoubleClick="list_Video_MouseDoubleClick">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
-                            <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="White"/>
-                            <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Url}" FontSize="10" Foreground="White"/>
+                            <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"/>
+                            <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Url}" FontSize="10" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -70,7 +67,8 @@
                 </Grid>
 
                 <Grid Width="600">
-                    <Label HorizontalAlignment="Left" Content="0:0:0/1:30:34(正在缓冲)" VerticalContentAlignment="Center"/>
+                    <Label HorizontalAlignment="Left" Content="0:0:0/1:30:34" VerticalContentAlignment="Center"/>
+                    <Label Content="(正在缓冲)" HorizontalAlignment="Left" Margin="80,0,0,0" VerticalAlignment="Center"/>
                 </Grid>
 
                 <local:ImageButton Width="60" Height="60" HorizontalAlignment="Right" Image="../Icon/list.png" Margin="0,0,10,0" x:Name="btn_List" Click="ImageButton_Click"/>

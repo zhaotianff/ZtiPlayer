@@ -24,6 +24,8 @@ namespace ZtiPlayer
         Storyboard showVideoListAnimation;
         Storyboard hideVideoListAnimation;
 
+        AxAPlayer3Lib.AxPlayer player;
+
         public MainWindow()
         {
             InitializeComponent();           
@@ -32,12 +34,25 @@ namespace ZtiPlayer
 
         private void Init()
         {
+            InitializeVideoPlayer();
+
             showVideoListAnimation = (Storyboard)this.TryFindResource("ShowVideoListAnimation");
             hideVideoListAnimation = (Storyboard)this.TryFindResource("HideVideoListAnimation");
             SetBackground("");
             LoadDemoData();
 
             InitializeCommands();
+            
+        }
+
+        private void InitializeVideoPlayer()
+        {
+            player = new AxAPlayer3Lib.AxPlayer();
+            ((System.ComponentModel.ISupportInitialize)(this.player)).BeginInit();
+            player.Dock = System.Windows.Forms.DockStyle.Fill;
+            player.OnMessage += (a, b) => { if (b.nMessage == 0x0203) ShowOrHideVideoList(); };
+            panel.Controls.Add(player);
+            ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();           
         }
 
         private void InitializeCommands()
@@ -83,7 +98,7 @@ namespace ZtiPlayer
             if(string.IsNullOrEmpty(filePath))
             {
                 player.SetCustomLogo(-1);       
-                //player.SetConfig((int)ConfigInterface.LogoSettings, "11119540;50;50");       
+                //player.SetConfig((int)ConfigInterface.LogoSettings, "16777215;0;0");       
             }
             else
             {
@@ -106,64 +121,90 @@ namespace ZtiPlayer
                     Durationtime = new TimeSpan(0,0,1),
                     Name = "Demo2",
                     Url = "http://www.demo.com/2.mp4"
+                },
+                new VideoItem()
+                {
+                    Durationtime = new TimeSpan(0,0,1),
+                    Name = "Demo3",
+                    Url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
                 }
             };
 
             this.list_Video.ItemsSource = listDemoVideo;
         }
 
-        private void ShowOrHideVideoList(bool isHide = false)
+        private void ShowOrHideVideoList()
         {
-            if(isHide == true)
-            {
-                if (hideVideoListAnimation != null)
-                    hideVideoListAnimation.Begin();
-                return;
-            }
-            if(list_Video.Width == 0)
+            if (list_Video.Width == 0)
             {
                 if (showVideoListAnimation != null)
-                    showVideoListAnimation.Begin();
-            }
+                {                               
+                    this.WindowState = System.Windows.WindowState.Normal;
+                }
+            }         
             else
             {
                 if (hideVideoListAnimation != null)
+                {
                     hideVideoListAnimation.Begin();
+                    this.grid_Function.Height = 0;
+                    this.WindowState = System.Windows.WindowState.Maximized;
+                }
             }
         }
 
         #region Event
         private void ImageButton_Click(object sender, RoutedEventArgs e)
         {
-            ShowOrHideVideoList();
+            if(list_Video.Width == 0)
+            {
+                showVideoListAnimation.Begin();
+            }
+            else
+            {
+                hideVideoListAnimation.Begin();
+            }
+
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
             if(this.WindowState == System.Windows.WindowState.Normal)
             {
-                this.grid_Function.Height = 120;
-                this.WindowStyle = System.Windows.WindowStyle.SingleBorderWindow;
-            }
-            else if(this.WindowState == System.Windows.WindowState.Maximized)
-            {
-                this.grid_Function.Height = 0;
-                ShowOrHideVideoList(true);
-                this.WindowStyle = System.Windows.WindowStyle.None;                          
-            }
+                this.grid_Function.Height = 120;                
+                if (list_Video.Width == 0)
+                {
+                    if (showVideoListAnimation != null)
+                        showVideoListAnimation.Begin();
+                }
+            }           
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
-                this.WindowState = System.Windows.WindowState.Normal;
-                ShowOrHideVideoList();
+                this.WindowState = System.Windows.WindowState.Normal;              
             }
 
         }
 
+        private void list_Video_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(this.list_Video.SelectedIndex != -1)
+            {
+                VideoItem item = this.list_Video.SelectedItem as VideoItem;
+                if(item != null)
+                {
+                    //TODO Check if resource is available
+                    player.Open(item.Url);
+                    player.Play();
+                }
+            }
+        }
+
         #endregion    
+       
         
     }
 }

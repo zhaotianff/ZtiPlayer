@@ -4,7 +4,7 @@
 
     <Style x:Key="FlatListBoxItem" TargetType="ListBoxItem">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Foreground" Value="Black" />
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -28,11 +28,11 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="Bd" Property="Background" Value="#a9abb4"/>
+                            <Setter TargetName="Bd" Property="Background" Value="#4ed3f7"/>
                             <Setter Property="Foreground" Value="White" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="true">
-                            <Setter TargetName="Bd" Property="Background" Value="#555556"/>
+                            <Setter TargetName="Bd" Property="Background" Value="#13beec"/>
                             <Setter Property="Foreground" Value="White"/>
                             <Setter Property="FontWeight" Value="Black" />
                         </Trigger>
