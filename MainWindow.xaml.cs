@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ZtiPlayer.Models;
+using ZtiPlayer.Utils;
 
 namespace ZtiPlayer
 {
@@ -25,6 +26,9 @@ namespace ZtiPlayer
         Storyboard hideVideoListAnimation;
 
         AxAPlayer3Lib.AxPlayer player;
+        System.Windows.Threading.DispatcherTimer timer;
+
+        private int elapsedTime = 0;
 
         public MainWindow()
         {
@@ -34,6 +38,7 @@ namespace ZtiPlayer
 
         private void Init()
         {
+            InitTimer();
             InitializeVideoPlayer();
 
             showVideoListAnimation = (Storyboard)this.TryFindResource("ShowVideoListAnimation");
@@ -45,16 +50,7 @@ namespace ZtiPlayer
             
         }
 
-        private void InitializeVideoPlayer()
-        {
-            player = new AxAPlayer3Lib.AxPlayer();
-            ((System.ComponentModel.ISupportInitialize)(this.player)).BeginInit();
-            player.Dock = System.Windows.Forms.DockStyle.Fill;
-            player.OnMessage += (a, b) => { if (b.nMessage == 0x0203) ShowOrHideVideoList(); };
-            panel.Controls.Add(player);
-            ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();           
-        }
-
+        #region Command
         private void InitializeCommands()
         {
             CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, CloseWindow));
@@ -105,7 +101,29 @@ namespace ZtiPlayer
                 player.SetCustomLogo(new System.Drawing.Bitmap(filePath).GetHbitmap().ToInt32());
             }
         }
+        #endregion
 
+
+        #region Function
+        private void InitTimer()
+        {
+            timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += (a, b) => { UpdateElapsedTime(); };
+        }
+        private void InitializeVideoPlayer()
+        {
+            player = new AxAPlayer3Lib.AxPlayer();
+            ((System.ComponentModel.ISupportInitialize)(this.player)).BeginInit();
+            player.Dock = System.Windows.Forms.DockStyle.Fill;
+            player.OnMessage += (a, b) => { MessageHandler(b.nMessage, b.lParam, b.wParam); };
+            player.OnBuffer += (a, b) => { Buffering(b.nPercent); };
+            player.OnDownloadCodec += (a, b) => { DownloadCodecDialog(b.strCodecPath); };
+            player.OnOpenSucceeded += (a, b) => { OpenVideoSuccess(); };
+            player.OnStateChanged += (a, b) => { HandleStateChange(b.nOldState, b.nNewState); };
+            panel.Controls.Add(player);
+            ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();
+        }
         private void LoadDemoData()
         {
             List<VideoItem> listDemoVideo = new List<VideoItem>()
@@ -135,7 +153,7 @@ namespace ZtiPlayer
 
         private void ShowOrHideVideoList()
         {
-            if (list_Video.Width == 0)
+            if (this.grid_List.Width == 0)
             {
                 if (showVideoListAnimation != null)
                 {                               
@@ -153,10 +171,75 @@ namespace ZtiPlayer
             }
         }
 
+        private void MessageHandler(int nMessage,int lParam,int wParam)
+        {
+            switch (nMessage)
+            {
+                case Win32Message.WM_LBUTTONDBLCLK:
+                    ShowOrHideVideoList();
+                    break;
+                case Win32Message.WM_RBUTTONDOWN:
+                    //TODO ContextMenu
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void Buffering(int nPercent)
+        {
+            Dispatcher.Invoke(()=> {
+                this.lbl_BufferState.Content = "正在缓冲" + nPercent + "%d";
+            });
+        }
+
+        private void DownloadCodecDialog(string codec)
+        {
+            MessageBox.Show(codec);
+        }
+
+        private void OpenVideoSuccess()
+        {
+            elapsedTime = 0;
+            this.lbl_Elapsed.Content = "00:00:00";
+            int durationMillionSeconds = player.GetDuration();
+            this.lbl_Duration.Content = GetTimeString(durationMillionSeconds);
+
+            this.slider_Progress.Value = 0;
+            this.slider_Progress.Maximum = durationMillionSeconds / 1000;
+            timer.IsEnabled = true;   
+        }
+
+        private string GetTimeString(int millionSeconds)
+        {
+            int seconds = 0, minutes = 0, hours = 0;
+            TimeSpan ts = TimeSpan.FromMilliseconds(millionSeconds);
+            seconds = ts.Seconds;
+            minutes = ts.Minutes;
+            hours = ts.Hours;
+            return hours.ToString("00") + minutes.ToString("00") + minutes.ToString("00");
+        }
+
+        private void UpdateElapsedTime()
+        {
+            elapsedTime++;
+            TimeSpan ts = TimeSpan.FromSeconds(elapsedTime);
+            this.Dispatcher.Invoke(()=> {
+                this.lbl_Elapsed.Content = ts.Hours.ToString("00") + ts.Minutes.ToString("00") + ts.Seconds.ToString("00");
+                this.slider_Progress.Value = elapsedTime;
+            });
+        }
+
+        private void HandleStateChange(int oldState,int newState)
+        {
+            //TODO
+        }
+        #endregion
+
         #region Event
         private void ImageButton_Click(object sender, RoutedEventArgs e)
         {
-            if(list_Video.Width == 0)
+            if(grid_List.Width == 0)
             {
                 showVideoListAnimation.Begin();
             }
@@ -172,7 +255,7 @@ namespace ZtiPlayer
             if(this.WindowState == System.Windows.WindowState.Normal)
             {
                 this.grid_Function.Height = 120;                
-                if (list_Video.Width == 0)
+                if (grid_List.Width == 0)
                 {
                     if (showVideoListAnimation != null)
                         showVideoListAnimation.Begin();
@@ -203,8 +286,30 @@ namespace ZtiPlayer
             }
         }
 
-        #endregion    
-       
-        
+        private void btn_Open_Click(object sender, RoutedEventArgs e)
+        {
+            popup_OpenMenu.IsOpen = true;
+        }
+
+        private void menu_OpenLocal_Click(object sender, RoutedEventArgs e)
+        {
+            popup_OpenMenu.IsOpen = false;
+            System.Windows.Forms.OpenFileDialog openDialog = new System.Windows.Forms.OpenFileDialog();
+            openDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+            openDialog.Filter = "mp4视频文件|*.mp4";
+            openDialog.RestoreDirectory = true;
+            if(openDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                player.Open(openDialog.FileName);
+                player.Play();
+            }
+        }
+
+        private void menu_OpenNetwork_Click(object sender, RoutedEventArgs e)
+        {
+            popup_OpenMenu.IsOpen = false;
+            //TODO
+        }
+        #endregion
     }
 }

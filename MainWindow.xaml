@@ -8,11 +8,11 @@
         KeyDown="Window_KeyDown" Style="{StaticResource newStyle}">
     <Window.Resources>
         <Storyboard x:Key="ShowVideoListAnimation">
-            <DoubleAnimation Storyboard.TargetName="list_Video" Storyboard.TargetProperty="Width" To="300" Duration="0:0:0.5"/>
+            <DoubleAnimation Storyboard.TargetName="grid_List" Storyboard.TargetProperty="Width" To="300" Duration="0:0:0.5"/>
         </Storyboard>
 
         <Storyboard x:Key="HideVideoListAnimation">
-            <DoubleAnimation Storyboard.TargetName="list_Video" Storyboard.TargetProperty="Width" To="0" Duration="0:0:0.5"/>
+            <DoubleAnimation Storyboard.TargetName="grid_List" Storyboard.TargetProperty="Width" To="0" Duration="0:0:0.5"/>
         </Storyboard>
     </Window.Resources>
     <Grid>
@@ -36,16 +36,35 @@
                 </winform:Panel>
             </WindowsFormsHost>
 
-            <ListBox Grid.Column="1" Width="300" Background="Transparent" BorderBrush="Transparent" Name="list_Video" MouseDoubleClick="list_Video_MouseDoubleClick">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"/>
-                            <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Url}" FontSize="10" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"/>
+            <Grid Grid.Column="1" Width="300" Background="Transparent" Name="grid_List">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="45"/>
+                </Grid.RowDefinitions>
+
+                <ListBox Width="300" Background="Transparent" BorderBrush="Transparent" Name="list_Video" MouseDoubleClick="list_Video_MouseDoubleClick">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"/>
+                                <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Url}" FontSize="10" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <WrapPanel Grid.Row="1">
+                    <local:ImageButton Width="30" Height="30" HorizontalAlignment="Right" Image="../Icon/open.png" Margin="5,7,0,0" x:Name="btn_Open" Click="btn_Open_Click"/>
+                    <Popup Placement="Top" PlacementTarget="{Binding ElementName=btn_Open}" StaysOpen="False" PopupAnimation="Fade" Name="popup_OpenMenu">
+                        <StackPanel Background="White">
+                            <MenuItem Header="打开本地文件" Name="menu_OpenLocal" Click="menu_OpenLocal_Click"/>
+                            <MenuItem Header="打开网络文件" Name="menu_OpenNetwork" Click="menu_OpenNetwork_Click"/>
                         </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                    </Popup>
+                </WrapPanel>
+
+               
+            </Grid>
         </Grid>
 
 
@@ -56,7 +75,7 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <Slider Margin="10,10,10,0"></Slider>
+                <Slider Margin="10,10,10,0" Name="slider_Progress" Minimum="0" TickFrequency="1"></Slider>
             </Grid>
 
             <Grid Grid.Row="1" >
@@ -67,8 +86,10 @@
                 </Grid>
 
                 <Grid Width="600">
-                    <Label HorizontalAlignment="Left" Content="0:0:0/1:30:34" VerticalContentAlignment="Center"/>
-                    <Label Content="(正在缓冲)" HorizontalAlignment="Left" Margin="80,0,0,0" VerticalAlignment="Center"/>
+                    <Label HorizontalAlignment="Left" VerticalContentAlignment="Center" Name="lbl_Elapsed"/>
+                    <Label HorizontalAlignment="Left" Content="/" Margin="50,0,0,0" VerticalAlignment="Center" Visibility="Hidden"/>
+                    <Label HorizontalAlignment="Left" Margin="55,0,0,0" VerticalAlignment="Center" Name="lbl_Duration"/>
+                    <Label HorizontalAlignment="Left" Margin="80,0,0,0" VerticalAlignment="Center" Name="lbl_BufferState"/>
                 </Grid>
 
                 <local:ImageButton Width="60" Height="60" HorizontalAlignment="Right" Image="../Icon/list.png" Margin="0,0,10,0" x:Name="btn_List" Click="ImageButton_Click"/>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZtiPlayer.Models
 {
-    enum ConfigInterface
+    enum ConfigEnum
     {
         LogoSettings = 36
     }
