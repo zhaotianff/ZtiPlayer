@@ -217,7 +217,7 @@ namespace ZtiPlayer
             seconds = ts.Seconds;
             minutes = ts.Minutes;
             hours = ts.Hours;
-            return hours.ToString("00") + minutes.ToString("00") + minutes.ToString("00");
+            return hours.ToString("00:") + minutes.ToString("00:") + minutes.ToString("00");
         }
 
         private void UpdateElapsedTime()
@@ -225,7 +225,7 @@ namespace ZtiPlayer
             elapsedTime++;
             TimeSpan ts = TimeSpan.FromSeconds(elapsedTime);
             this.Dispatcher.Invoke(()=> {
-                this.lbl_Elapsed.Content = ts.Hours.ToString("00") + ts.Minutes.ToString("00") + ts.Seconds.ToString("00");
+                this.lbl_Elapsed.Content = ts.Hours.ToString("00:") + ts.Minutes.ToString("00:") + ts.Seconds.ToString("00");
                 this.slider_Progress.Value = elapsedTime;
             });
         }
@@ -309,6 +309,12 @@ namespace ZtiPlayer
         {
             popup_OpenMenu.IsOpen = false;
             //TODO
+        }
+
+        private void slider_Progress_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            timer.IsEnabled = false;
+            this.player.SetPosition((int)this.slider_Progress.Value * 1000);
         }
         #endregion
     }
