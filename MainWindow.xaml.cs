@@ -28,7 +28,7 @@ namespace ZtiPlayer
         AxAPlayer3Lib.AxPlayer player;
         System.Windows.Threading.DispatcherTimer timer;
 
-        private int elapsedTime = 0;
+        int elapsedTime = 0;
 
         public MainWindow()
         {
@@ -200,7 +200,6 @@ namespace ZtiPlayer
 
         private void OpenVideoSuccess()
         {
-            elapsedTime = 0;
             this.lbl_Elapsed.Content = "00:00:00";
             int durationMillionSeconds = player.GetDuration();
             this.lbl_Duration.Content = GetTimeString(durationMillionSeconds);
@@ -217,16 +216,15 @@ namespace ZtiPlayer
             seconds = ts.Seconds;
             minutes = ts.Minutes;
             hours = ts.Hours;
-            return hours.ToString("00:") + minutes.ToString("00:") + minutes.ToString("00");
+            return hours.ToString("00") + ":" +  minutes.ToString("00") +   ":" + seconds.ToString("00");
         }
 
         private void UpdateElapsedTime()
-        {
-            elapsedTime++;
-            TimeSpan ts = TimeSpan.FromSeconds(elapsedTime);
+        {         
             this.Dispatcher.Invoke(()=> {
-                this.lbl_Elapsed.Content = ts.Hours.ToString("00:") + ts.Minutes.ToString("00:") + ts.Seconds.ToString("00");
-                this.slider_Progress.Value = elapsedTime;
+                elapsedTime = this.player.GetPosition();
+                this.lbl_Elapsed.Content = GetTimeString(elapsedTime);              
+                this.slider_Progress.Value = elapsedTime/1000;
             });
         }
 
@@ -295,9 +293,9 @@ namespace ZtiPlayer
         {
             popup_OpenMenu.IsOpen = false;
             System.Windows.Forms.OpenFileDialog openDialog = new System.Windows.Forms.OpenFileDialog();
-            openDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
-            openDialog.Filter = "mp4视频文件|*.mp4";
-            openDialog.RestoreDirectory = true;
+            //openDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+            openDialog.Filter = "mp4视频文件|*.mp4|所有文件|*.*";
+            openDialog.RestoreDirectory = false;
             if(openDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 player.Open(openDialog.FileName);
@@ -311,11 +309,14 @@ namespace ZtiPlayer
             //TODO
         }
 
-        private void slider_Progress_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        private void slider_Progress_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
-            timer.IsEnabled = false;
-            this.player.SetPosition((int)this.slider_Progress.Value * 1000);
+            int time = (int)this.slider_Progress.Value * 1000;
+            this.player.SetPosition(time);
+            this.lbl_Elapsed.Content = GetTimeString(time);
         }
         #endregion
+
+
     }
 }

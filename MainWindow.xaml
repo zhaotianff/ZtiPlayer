@@ -75,7 +75,7 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <Slider Margin="10,10,10,0" Name="slider_Progress" Minimum="0" TickFrequency="1" Thumb.DragStarted="slider_Progress_DragStarted" ></Slider>              
+                <Slider Margin="10,10,10,0" Name="slider_Progress" Minimum="0" TickFrequency="1"  Thumb.DragCompleted="slider_Progress_DragCompleted"></Slider>              
             </Grid>
 
             <Grid Grid.Row="1" >
