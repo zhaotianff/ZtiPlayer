@@ -82,11 +82,20 @@
                 <Label HorizontalAlignment="Right" VerticalAlignment="Top"  Name="lbl_Duration"/>
                 <Label HorizontalAlignment="Left"  VerticalAlignment="Top"  Name="lbl_Elapsed"/>
 
-                <Grid Width="250">
-                    <local:ImageButton Width="65" Height="65" Image="../Icon/play.png" />
-                    <local:ImageButton Width="60" Height="60" Image="../Icon/previous.png" HorizontalAlignment="Left"/>
+                <Grid Width="350">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <local:ImageButton Width="65" Height="65" Image="../Icon/play.png"  Click="btn_Pause_Click"  x:Name="btn_Pause"/>
+                    <local:ImageButton Width="60" Height="60" Image="../Icon/previous.png" HorizontalAlignment="Left" />
                     <local:ImageButton Width="60" Height="60" Image="../Icon/next.png" HorizontalAlignment="Right"/>
+
+                    <local:ImageButton Width="50" Height="50" Image="../Icon/stop.png" HorizontalAlignment="Center" Grid.Column="1" x:Name="btn_Stop" Click="btn_Stop_Click"/>
                 </Grid>
+                
+                
 
                 <Grid Width="600">                                               
                     <Label HorizontalAlignment="Left" Margin="80,0,0,0" VerticalAlignment="Center" Name="lbl_BufferState"/>

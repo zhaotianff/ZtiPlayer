@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\PlayState.cs" />
     <Compile Include="Utils\PlayerHelper.cs" />
     <Compile Include="Utils\PlayerStateEnum.cs" />
     <Compile Include="Utils\Win32Message.cs" />

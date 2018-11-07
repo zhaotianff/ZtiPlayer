@@ -206,7 +206,9 @@ namespace ZtiPlayer
 
             this.slider_Progress.Value = 0;
             this.slider_Progress.Maximum = durationMillionSeconds / 1000;
-            timer.IsEnabled = true;   
+            timer.IsEnabled = true;
+
+            this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
         }
 
         private string GetTimeString(int millionSeconds)
@@ -231,6 +233,17 @@ namespace ZtiPlayer
         private void HandleStateChange(int oldState,int newState)
         {
             //TODO
+        }
+
+        private void SetProgress(int value)
+        {
+            slider_Progress.Value = value;
+
+            if(value == 0)
+            {
+                timer.IsEnabled = false;
+                this.lbl_Elapsed.Content = "00:00:00";
+            }
         }
         #endregion
 
@@ -315,8 +328,28 @@ namespace ZtiPlayer
             this.player.SetPosition(time);
             this.lbl_Elapsed.Content = GetTimeString(time);
         }
-        #endregion
 
+        private void btn_Stop_Click(object sender, RoutedEventArgs e)
+        {
+            player.Close();
+            SetProgress(0);
+        }
+
+
+        private void btn_Pause_Click(object sender, RoutedEventArgs e)
+        {
+            if(player.GetState() == (int)PlayState.PS_PLAY)
+            {
+                player.Pause();
+                this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/play.png");
+            }
+            else if(player.GetState() == (int)PlayState.PS_PAUSED)
+            {
+                player.Play();
+                this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
+            }
+        }
+        #endregion
 
     }
 }
