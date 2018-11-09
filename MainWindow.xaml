@@ -82,7 +82,7 @@
                 <Label HorizontalAlignment="Right" VerticalAlignment="Top"  Name="lbl_Duration"/>
                 <Label HorizontalAlignment="Left"  VerticalAlignment="Top"  Name="lbl_Elapsed"/>
 
-                <Grid Width="350">
+                <Grid Width="620">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250"/>
                         <ColumnDefinition/>
@@ -92,7 +92,9 @@
                     <local:ImageButton Width="60" Height="60" Image="../Icon/previous.png" HorizontalAlignment="Left" />
                     <local:ImageButton Width="60" Height="60" Image="../Icon/next.png" HorizontalAlignment="Right"/>
 
-                    <local:ImageButton Width="50" Height="50" Image="../Icon/stop.png" HorizontalAlignment="Center" Grid.Column="1" x:Name="btn_Stop" Click="btn_Stop_Click"/>
+                    <local:ImageButton Width="50" Height="50" Image="../Icon/stop.png" HorizontalAlignment="Left" Grid.Column="1" x:Name="btn_Stop" Click="btn_Stop_Click" Margin="20,0,0,0"/>
+                    <local:ImageButton Width="30" Height="30" Image="../Icon/sound.png" HorizontalAlignment="Left" Grid.Column="1" Margin="215,0,0,0" x:Name="btn_Volume" Click="btn_Volume_Click"/>
+                    <Slider Width="120" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" Name="slider_Volume" Minimum="0" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" Thumb.DragCompleted="slider_Volume_DragCompleted"/>
                 </Grid>
                 
                 

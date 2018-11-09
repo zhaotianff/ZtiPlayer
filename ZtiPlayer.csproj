@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\PlayerConfig.cs" />
     <Compile Include="Models\PlayState.cs" />
     <Compile Include="Utils\PlayerHelper.cs" />
     <Compile Include="Utils\PlayerStateEnum.cs" />
@@ -145,6 +146,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icon\open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\sound.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

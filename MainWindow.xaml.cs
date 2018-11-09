@@ -123,6 +123,10 @@ namespace ZtiPlayer
             player.OnStateChanged += (a, b) => { HandleStateChange(b.nOldState, b.nNewState); };
             panel.Controls.Add(player);
             ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();
+
+
+            //Volume
+            this.slider_Volume.Value = player.GetVolume();
         }
         private void LoadDemoData()
         {
@@ -349,7 +353,16 @@ namespace ZtiPlayer
                 this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
             }
         }
-        #endregion
 
+        private void slider_Volume_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            this.player.SetVolume((int)this.slider_Volume.Value);
+        }
+
+        private void btn_Volume_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion       
     }
 }
