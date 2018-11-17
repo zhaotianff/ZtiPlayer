@@ -65,9 +65,11 @@
     </ApplicationDefinition>
     <Compile Include="Models\PlayerConfig.cs" />
     <Compile Include="Models\PlayState.cs" />
+    <Compile Include="Utils\GlobalData.cs" />
     <Compile Include="Utils\PlayerHelper.cs" />
     <Compile Include="Utils\PlayerStateEnum.cs" />
     <Compile Include="Utils\Win32Message.cs" />
+    <Compile Include="Utils\XmlHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
