@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<PlayList>
+	<Item>
+		<Name>Snow.mp4</Name>
+		<Path>https://myfreetime.cn/Snow.mp4</Path>
+		<Type>1</Type>
+	</Item>
+	<Item>
+		<Name>xmj.mp4</Name>
+		<Path>D:\xml.mp4</Path>
+		<Type>0</Type>
+	</Item>	
+</PlayList>
