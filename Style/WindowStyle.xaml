@@ -20,10 +20,12 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Opacity" Value=".5" TargetName="ButtonBackground" />
+                            <Setter Property="Opacity" Value=".5" TargetName="ButtonBorder" />
+                            <Setter Property="Background" Value="LightSkyBlue"/>
                         </Trigger>
                         <Trigger Property="IsPressed"  Value="True">
-                            <Setter Property="Opacity" Value="0.4"  TargetName="ButtonBackground" />
+                            <Setter Property="Opacity" Value="0.4"  TargetName="ButtonBorder" />
+                            <Setter Property="Background" Value="LightSkyBlue"/>
                         </Trigger>
                         <Trigger Property="IsEnabled"   Value="false">
                             <Setter TargetName="TitleButtonContent"  Property="Opacity" Value=".5" />

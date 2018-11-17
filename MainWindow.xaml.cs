@@ -136,19 +136,19 @@ namespace ZtiPlayer
                 {
                     Durationtime = new TimeSpan(0,0,1),
                     Name = "Demo1",
-                    Url = "http://www.demo.com/1.mp4"
+                    Path = "http://www.demo.com/1.mp4"
                 },
                 new VideoItem()
                 {
                     Durationtime = new TimeSpan(0,0,1),
                     Name = "Demo2",
-                    Url = "http://www.demo.com/2.mp4"
+                    Path = "http://www.demo.com/2.mp4"
                 },
                 new VideoItem()
                 {
                     Durationtime = new TimeSpan(0,0,1),
                     Name = "Demo3",
-                    Url = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
+                    Path = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
                 }
             };
 
@@ -295,7 +295,7 @@ namespace ZtiPlayer
                 if(item != null)
                 {
                     //TODO Check if resource is available
-                    player.Open(item.Url);
+                    player.Open(item.Path);
                     player.Play();
                 }
             }
@@ -337,6 +337,7 @@ namespace ZtiPlayer
         {
             player.Close();
             SetProgress(0);
+            this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/play.png");
         }
 
 
@@ -361,7 +362,19 @@ namespace ZtiPlayer
 
         private void btn_Volume_Click(object sender, RoutedEventArgs e)
         {
-
+            int volume = this.player.GetVolume();
+            if(volume == 0)
+            {
+                player.SetVolume(50);
+                slider_Volume.Value = 50;
+                btn_Volume.Image = "../Icon/sound.png";
+            }
+            else
+            {
+                player.SetVolume(0);
+                slider_Volume.Value = 0;
+                btn_Volume.Image = "../Icon/sound_silent.png";
+            }
         }
         #endregion       
     }

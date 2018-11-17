@@ -46,8 +46,11 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"/>
-                                <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Url}" FontSize="10" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"/>
+                                <WrapPanel>
+                                    <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"/>
+                                    <Label Height="25" VerticalAlignment="Center" Content="{Binding Durationtime}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" />
+                                </WrapPanel>
+                                <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Path}" FontSize="10" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -94,7 +97,7 @@
 
                     <local:ImageButton Width="50" Height="50" Image="../Icon/stop.png" HorizontalAlignment="Left" Grid.Column="1" x:Name="btn_Stop" Click="btn_Stop_Click" Margin="20,0,0,0"/>
                     <local:ImageButton Width="30" Height="30" Image="../Icon/sound.png" HorizontalAlignment="Left" Grid.Column="1" Margin="215,0,0,0" x:Name="btn_Volume" Click="btn_Volume_Click"/>
-                    <Slider Width="120" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" Name="slider_Volume" Minimum="0" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" Thumb.DragCompleted="slider_Volume_DragCompleted"/>
+                    <Slider Width="120" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" Name="slider_Volume" Minimum="0" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" Thumb.DragCompleted="slider_Volume_DragCompleted" ToolTip="{Binding ElementName=slider_Volume,Path=Value}"/>
                 </Grid>
                 
                 
