@@ -49,7 +49,7 @@ namespace ZtiPlayer
             InitializeCommands();
 
 
-            this.formhost.Visibility = Visibility.Hidden;
+            HideFormHost();
         }
 
         #region Command
@@ -214,11 +214,37 @@ namespace ZtiPlayer
             {
                 player.Open(openDialog.FileName);
                 player.Play();
-            }
+            }           
+        }
 
+        private void ShowOpenUrlDialog()
+        {
+            //TODO
+            List<string> list = new List<string>();
+            OpenURLDialog openURLDialog = new OpenURLDialog(list);
+            if(openURLDialog.ShowDialog().Value == true)
+            {
+                HideNavigationButton();                
+            }
+        }
+
+        private void ShowNavigationButton()
+        {
+            this.formhost.Visibility = Visibility.Hidden;
+            this.gridhost.Visibility = Visibility.Visible;
+        }
+
+        private void HideNavigationButton()
+        {
             this.formhost.Visibility = Visibility.Visible;
             this.gridhost.Visibility = Visibility.Hidden;
         }
+
+        private void HideFormHost()
+        {
+            this.formhost.Visibility = Visibility.Hidden;
+        }
+
 
         private void OpenVideoSuccess()
         {
@@ -231,6 +257,8 @@ namespace ZtiPlayer
             timer.IsEnabled = true;
 
             this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
+
+            HideNavigationButton();
         }
 
         private string GetTimeString(int millionSeconds)
@@ -266,6 +294,14 @@ namespace ZtiPlayer
                 timer.IsEnabled = false;
                 this.lbl_Elapsed.Content = "00:00:00";
             }
+        }
+
+        private void StopPlay()
+        {
+            player.Close();
+            SetProgress(0);
+            this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/play.png");
+            ShowNavigationButton();
         }
         #endregion
 
@@ -333,7 +369,7 @@ namespace ZtiPlayer
         private void menu_OpenNetwork_Click(object sender, RoutedEventArgs e)
         {
             popup_OpenMenu.IsOpen = false;
-            //TODO
+            ShowOpenUrlDialog();
         }
 
         private void slider_Progress_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
@@ -345,9 +381,7 @@ namespace ZtiPlayer
 
         private void btn_Stop_Click(object sender, RoutedEventArgs e)
         {
-            player.Close();
-            SetProgress(0);
-            this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/play.png");
+            StopPlay();
         }
 
 
@@ -390,6 +424,11 @@ namespace ZtiPlayer
         private void btn_OpenLocalFile_Click(object sender, RoutedEventArgs e)
         {
             OpenLocalFile();
+        }
+
+        private void btn_OpenUrl_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOpenUrlDialog();
         }
         #endregion      
     }

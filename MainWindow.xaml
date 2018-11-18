@@ -50,7 +50,7 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <local:ImageButton Image="../Icon/cloud.png" Width="100" Height="100" VerticalAlignment="Center"/>
+                    <local:ImageButton Image="../Icon/cloud.png" Width="100" Height="100" VerticalAlignment="Center" x:Name="btn_OpenUrl" Click="btn_OpenUrl_Click"/>
                     <Label Content="打开网址" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Grid>
