@@ -47,7 +47,9 @@ namespace ZtiPlayer
             LoadDemoData();
 
             InitializeCommands();
-            
+
+
+            this.formhost.Visibility = Visibility.Hidden;
         }
 
         #region Command
@@ -202,6 +204,22 @@ namespace ZtiPlayer
             MessageBox.Show(codec);
         }
 
+        private void OpenLocalFile()
+        {
+            System.Windows.Forms.OpenFileDialog openDialog = new System.Windows.Forms.OpenFileDialog();
+            //openDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
+            openDialog.Filter = "mp4视频文件|*.mp4|所有文件|*.*";
+            openDialog.RestoreDirectory = false;
+            if (openDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                player.Open(openDialog.FileName);
+                player.Play();
+            }
+
+            this.formhost.Visibility = Visibility.Visible;
+            this.gridhost.Visibility = Visibility.Hidden;
+        }
+
         private void OpenVideoSuccess()
         {
             this.lbl_Elapsed.Content = "00:00:00";
@@ -309,15 +327,7 @@ namespace ZtiPlayer
         private void menu_OpenLocal_Click(object sender, RoutedEventArgs e)
         {
             popup_OpenMenu.IsOpen = false;
-            System.Windows.Forms.OpenFileDialog openDialog = new System.Windows.Forms.OpenFileDialog();
-            //openDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
-            openDialog.Filter = "mp4视频文件|*.mp4|所有文件|*.*";
-            openDialog.RestoreDirectory = false;
-            if(openDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                player.Open(openDialog.FileName);
-                player.Play();
-            }
+            OpenLocalFile();
         }
 
         private void menu_OpenNetwork_Click(object sender, RoutedEventArgs e)
@@ -376,6 +386,11 @@ namespace ZtiPlayer
                 btn_Volume.Image = "../Icon/sound_silent.png";
             }
         }
-        #endregion       
+
+        private void btn_OpenLocalFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenLocalFile();
+        }
+        #endregion      
     }
 }

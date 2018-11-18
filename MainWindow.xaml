@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:ZtiPlayer"
         xmlns:winform="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         Title="ZtiPlayer" Height="720" Width="1080" Icon="logo.png" WindowStartupLocation="CenterScreen" StateChanged="Window_StateChanged"      
-        KeyDown="Window_KeyDown" Style="{StaticResource newStyle}">
+        KeyDown="Window_KeyDown" Style="{StaticResource newStyle}" FontFamily="{StaticResource muyao}">
     <Window.Resources>
         <Storyboard x:Key="ShowVideoListAnimation">
             <DoubleAnimation Storyboard.TargetName="grid_List" Storyboard.TargetProperty="Width" To="300" Duration="0:0:0.5"/>
@@ -30,11 +30,30 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <WindowsFormsHost>
+            <WindowsFormsHost  x:Name="formhost">
                 <winform:Panel x:Name="panel">
                     
                 </winform:Panel>
             </WindowsFormsHost>
+
+            <Grid Grid.Row="0" Panel.ZIndex="1" Background="White" Width="500" x:Name="gridhost">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                   
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <local:ImageButton Image="../Icon/video.png" Width="100" Height="100" VerticalAlignment="Center" x:Name="btn_OpenLocalFile" Click="btn_OpenLocalFile_Click"/>
+                    <Label Content="打开本地文件" HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <local:ImageButton Image="../Icon/cloud.png" Width="100" Height="100" VerticalAlignment="Center"/>
+                    <Label Content="打开网址" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
 
             <Grid Grid.Column="1" Width="300" Background="Transparent" Name="grid_List">
                 <Grid.RowDefinitions>
@@ -47,10 +66,10 @@
                         <DataTemplate>
                             <StackPanel>
                                 <WrapPanel>
-                                    <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"/>
+                                    <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" FontSize="15"/>
                                     <Label Height="25" VerticalAlignment="Center" Content="{Binding Durationtime}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" />
                                 </WrapPanel>
-                                <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Path}" FontSize="10" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"/>
+                                <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Path}" FontSize="10" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" FontFamily="{StaticResource default}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -82,8 +101,8 @@
             </Grid>
 
             <Grid Grid.Row="1" >
-                <Label HorizontalAlignment="Right" VerticalAlignment="Top"  Name="lbl_Duration"/>
-                <Label HorizontalAlignment="Left"  VerticalAlignment="Top"  Name="lbl_Elapsed"/>
+                <Label HorizontalAlignment="Right" VerticalAlignment="Top"  Name="lbl_Duration" FontFamily="{StaticResource default}"/>
+                <Label HorizontalAlignment="Left"  VerticalAlignment="Top"  Name="lbl_Elapsed" FontFamily="{StaticResource default}"/>
 
                 <Grid Width="620">
                     <Grid.ColumnDefinitions>
