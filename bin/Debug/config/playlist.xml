@@ -1,13 +1,21 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <PlayList>
-	<Item>
-		<Name>Snow.mp4</Name>
-		<Path>https://myfreetime.cn/Snow.mp4</Path>
-		<Type>1</Type>
-	</Item>
-	<Item>
-		<Name>xmj.mp4</Name>
-		<Path>D:\xml.mp4</Path>
-		<Type>0</Type>
-	</Item>	
+  <Item>
+    <Name>Snow.mp4</Name>
+    <Path>https://myfreetime.cn/Snow.mp4</Path>
+    <Type>1</Type>
+    <Duration>30000</Duration>
+  </Item>
+  <Item>
+    <Name>xmj.mp4</Name>
+    <Path>D:\xml.mp4</Path>
+    <Type>0</Type>
+    <Duration>13000</Duration>
+  </Item>
+  <Item>
+    <Name>mad.max.fury.road.2015.疯狂的麦克斯.狂怒之路.720p.chi_eng.zmz-web-mp4.mp4</Name>
+    <Path>F:\迅雷下载\Mad.Max.Fury.Road.2015.疯狂的麦克斯.狂怒之路.720p.Chi_Eng.ZMZ-WEB-MP4.mp4</Path>
+    <Type>0</Type>
+    <Duration>246</Duration>
+  </Item>
 </PlayList>

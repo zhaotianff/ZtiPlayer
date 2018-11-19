@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZtiPlayer.Models
 {
-    class VideoItem
+    public class VideoItem
     {
         public string Name { get; set; }
 
@@ -17,7 +17,7 @@ namespace ZtiPlayer.Models
         /// </summary>
         public int Type { get; set; }
 
-        public TimeSpan Durationtime { get; set; }
+        public TimeSpan Duration { get; set; }
 
 
     }

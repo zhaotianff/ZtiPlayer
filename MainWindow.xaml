@@ -67,7 +67,7 @@
                             <StackPanel>
                                 <WrapPanel>
                                     <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" FontSize="15"/>
-                                    <Label Height="25" VerticalAlignment="Center" Content="{Binding Durationtime}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" />
+                                    <Label Height="25" VerticalAlignment="Center" Content="{Binding Duration}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" />
                                 </WrapPanel>
                                 <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Path}" FontSize="10" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" FontFamily="{StaticResource default}"/>
                             </StackPanel>

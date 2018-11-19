@@ -22,13 +22,18 @@ namespace ZtiPlayer
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string playlistConfigFilePath = Environment.CurrentDirectory + "\\config\\playlist.xml";
+
         Storyboard showVideoListAnimation;
         Storyboard hideVideoListAnimation;
 
         AxAPlayer3Lib.AxPlayer player;
         System.Windows.Threading.DispatcherTimer timer;
+        XmlHelper playlistXmlHelper = new XmlHelper();
 
         int elapsedTime = 0;
+        int videoType = 0;
+        string videoPath = "";
 
         public MainWindow()
         {
@@ -40,20 +45,18 @@ namespace ZtiPlayer
         {
             InitTimer();
             InitializeVideoPlayer();
+            InitCfg();
+            InitCommands();
 
             showVideoListAnimation = (Storyboard)this.TryFindResource("ShowVideoListAnimation");
             hideVideoListAnimation = (Storyboard)this.TryFindResource("HideVideoListAnimation");
             SetBackground("");
-            LoadDemoData();
-
-            InitializeCommands();
-
-
+            LoadPlayList();          
             HideFormHost();
         }
 
         #region Command
-        private void InitializeCommands()
+        private void InitCommands()
         {
             CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, CloseWindow));
             CommandBindings.Add(new CommandBinding(SystemCommands.MaximizeWindowCommand, MaximizeWindow, CanResizeWindow));
@@ -130,31 +133,49 @@ namespace ZtiPlayer
             //Volume
             this.slider_Volume.Value = player.GetVolume();
         }
+
+        private void InitCfg()
+        {
+            try
+            {
+                playlistXmlHelper.OpenFile(playlistConfigFilePath);
+            }
+            catch(Exception ex)
+            {
+                //TODO
+            }
+        }
+
         private void LoadDemoData()
         {
             List<VideoItem> listDemoVideo = new List<VideoItem>()
             {
                 new VideoItem()
                 {
-                    Durationtime = new TimeSpan(0,0,1),
+                    Duration = new TimeSpan(0,0,1),
                     Name = "Demo1",
                     Path = "http://www.demo.com/1.mp4"
                 },
                 new VideoItem()
                 {
-                    Durationtime = new TimeSpan(0,0,1),
+                    Duration = new TimeSpan(0,0,1),
                     Name = "Demo2",
                     Path = "http://www.demo.com/2.mp4"
                 },
                 new VideoItem()
                 {
-                    Durationtime = new TimeSpan(0,0,1),
+                    Duration = new TimeSpan(0,0,1),
                     Name = "Demo3",
                     Path = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
                 }
             };
 
             this.list_Video.ItemsSource = listDemoVideo;
+        }
+
+        private void LoadPlayList()
+        {
+            this.list_Video.ItemsSource = playlistXmlHelper.LoadPlayList();
         }
 
         private void ShowOrHideVideoList()
@@ -202,6 +223,7 @@ namespace ZtiPlayer
         private void DownloadCodecDialog(string codec)
         {
             MessageBox.Show(codec);
+            player.Close();
         }
 
         private void OpenLocalFile()
@@ -212,7 +234,8 @@ namespace ZtiPlayer
             openDialog.RestoreDirectory = false;
             if (openDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                player.Open(openDialog.FileName);
+                videoPath = openDialog.FileName;
+                player.Open(videoPath);
                 player.Play();
             }           
         }
@@ -259,6 +282,13 @@ namespace ZtiPlayer
             this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
 
             HideNavigationButton();
+
+            VideoItem videoItem = new VideoItem();
+            videoItem.Name = GetVideoName(videoPath);
+            videoItem.Path = videoPath;
+            videoItem.Type = videoType;
+            videoItem.Duration =TimeSpan.FromMilliseconds( durationMillionSeconds);
+            playlistXmlHelper.AddToPlayList(videoItem);
         }
 
         private string GetTimeString(int millionSeconds)
@@ -269,6 +299,24 @@ namespace ZtiPlayer
             minutes = ts.Minutes;
             hours = ts.Hours;
             return hours.ToString("00") + ":" +  minutes.ToString("00") +   ":" + seconds.ToString("00");
+        }
+
+        private string GetVideoName(string path)
+        {
+            path = path.ToLower();
+            if(videoType == 0)
+            {
+                return System.IO.Path.GetFileName(path);
+            }
+            else if(videoType == 1)
+            {
+                path = path.Substring(path.LastIndexOf("/") + 1);
+                return System.Web.HttpUtility.UrlDecode(path);
+            }
+            else
+            {
+                return "";
+            }
         }
 
         private void UpdateElapsedTime()
