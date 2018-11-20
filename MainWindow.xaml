@@ -61,7 +61,7 @@
                     <RowDefinition Height="45"/>
                 </Grid.RowDefinitions>
 
-                <ListBox Width="300" Background="Transparent" BorderBrush="Transparent" Name="list_Video" MouseDoubleClick="list_Video_MouseDoubleClick">
+                <ListBox Width="300" Background="Transparent" BorderBrush="Transparent" Name="list_Video" MouseDoubleClick="list_Video_MouseDoubleClick" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ContextMenuOpening="ContextMenu_ContextMenuOpening">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
@@ -73,6 +73,16 @@
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
+
+                    <ListBox.ContextMenu>
+                        <ContextMenu ItemContainerStyle="{StaticResource StyleMenuItem}" Style="{StaticResource ContextMenuStyle}" Name="contextmenu_VideoList" >
+                            <MenuItem Header="播放选中文件"/>
+                            <MenuItem Header="删除选中文件"/>
+                            <MenuItem Header="打开文件位置"/>
+                            <MenuItem Header="文件属性"/>
+                            <MenuItem Header="清空列表"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                 </ListBox>
 
                 <WrapPanel Grid.Row="1">

@@ -351,6 +351,22 @@ namespace ZtiPlayer
             this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/play.png");
             ShowNavigationButton();
         }
+
+        private void InvalidateContextMenu()
+        {
+            bool isEnabledFlag = true;
+            if(this.list_Video.SelectedIndex == -1)
+            {
+                isEnabledFlag = false;
+            }
+
+            MenuItem item = new MenuItem();
+            for (int i = 0; i < 4; i++)
+            {
+                item = this.contextmenu_VideoList.Items[i] as MenuItem;
+                item.IsEnabled = isEnabledFlag;
+            }
+        }
         #endregion
 
         #region Event
@@ -478,6 +494,11 @@ namespace ZtiPlayer
         {
             ShowOpenUrlDialog();
         }
-        #endregion      
+
+        private void ContextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            InvalidateContextMenu();
+        }
+        #endregion       
     }
 }
