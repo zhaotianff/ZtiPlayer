@@ -30,10 +30,13 @@ namespace ZtiPlayer
         AxAPlayer3Lib.AxPlayer player;
         System.Windows.Threading.DispatcherTimer timer;
         XmlHelper playlistXmlHelper = new XmlHelper();
+        System.Windows.Controls.ContextMenu contextMenu;
 
         int elapsedTime = 0;
         int videoType = 0;
+        int currentSelectedIndex = -1;
         string videoPath = "";
+
 
         public MainWindow()
         {
@@ -47,6 +50,7 @@ namespace ZtiPlayer
             InitializeVideoPlayer();
             InitCfg();
             InitCommands();
+            InitContextMenu();
 
             showVideoListAnimation = (Storyboard)this.TryFindResource("ShowVideoListAnimation");
             hideVideoListAnimation = (Storyboard)this.TryFindResource("HideVideoListAnimation");
@@ -99,7 +103,7 @@ namespace ZtiPlayer
             if(string.IsNullOrEmpty(filePath))
             {
                 player.SetCustomLogo(-1);       
-                //player.SetConfig((int)ConfigInterface.LogoSettings, "16777215;0;0");       
+                //player.SetConfig((int)PlayerConfig.LogoSettings, "16777215;0;0");       
             }
             else
             {
@@ -143,6 +147,28 @@ namespace ZtiPlayer
             catch(Exception ex)
             {
                 //TODO
+            }
+        }
+
+        private void InitContextMenu()
+        {
+            try
+            {
+                contextMenu = this.TryFindResource("contextMenu") as System.Windows.Controls.ContextMenu;
+                this.formhost.ContextMenu = contextMenu;
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void ShowContextMenu()
+        {
+            if(contextMenu != null)
+            {
+                //ContextMenu Rule
+                this.formhost.ContextMenu.IsOpen = true;
             }
         }
 
@@ -207,6 +233,7 @@ namespace ZtiPlayer
                     break;
                 case Win32Message.WM_RBUTTONDOWN:
                     //TODO ContextMenu
+                    ShowContextMenu();
                     break;
                 default:
                     break;
@@ -238,6 +265,17 @@ namespace ZtiPlayer
                 player.Open(videoPath);
                 player.Play();
             }           
+        }
+
+        private void OpenNetworkFile()
+        {
+
+        }
+
+        private void Open(VideoItem item)
+        {
+            this.player.Open(item.Path);
+            this.player.Play();
         }
 
         private void ShowOpenUrlDialog()
@@ -283,12 +321,22 @@ namespace ZtiPlayer
 
             HideNavigationButton();
 
+            //TODO mistake
             VideoItem videoItem = new VideoItem();
             videoItem.Name = GetVideoName(videoPath);
             videoItem.Path = videoPath;
             videoItem.Type = videoType;
             videoItem.Duration =TimeSpan.FromMilliseconds( durationMillionSeconds);
-            playlistXmlHelper.AddToPlayList(videoItem);
+            var playlist = playlistXmlHelper.AddToPlayList(videoItem);
+            this.list_Video.ItemsSource = playlist;
+            currentSelectedIndex = playlist.Count - 1;
+            list_Video.SelectedIndex = currentSelectedIndex;
+        }
+
+        private void ClearPlayList()
+        {
+            this.list_Video.ItemsSource = null;
+            playlistXmlHelper.ClearPlayList();
         }
 
         private string GetTimeString(int millionSeconds)
@@ -365,6 +413,53 @@ namespace ZtiPlayer
             {
                 item = this.contextmenu_VideoList.Items[i] as MenuItem;
                 item.IsEnabled = isEnabledFlag;
+            }
+        }
+
+        private void ScreenShot()
+        {
+            //TODO from config 
+            string path = Environment.CurrentDirectory + "\\" + DateTime.Now.ToString("HH_mm_ss") + ".bmp";
+            player.SetConfig((int)PlayerConfig.SnapshotImage, path);
+        }
+
+        private void PlayNext()
+        {
+            VideoItem item = new VideoItem();
+            if(currentSelectedIndex == -1)
+            {
+                currentSelectedIndex = 0;
+                list_Video.SelectedIndex = 0;
+                item = list_Video.Items[currentSelectedIndex] as VideoItem;
+                if(item != null)
+                    Open(item);
+            }
+            else if(currentSelectedIndex < list_Video.Items.Count -1)
+            {
+                item = list_Video.Items[currentSelectedIndex + 1] as VideoItem;
+                if (item != null)
+                    Open(item);
+            }
+
+            //TODO Disable next
+        }
+
+        private void PlayPrevious()
+        {
+            VideoItem item = new VideoItem();
+            if (currentSelectedIndex == -1)
+            {
+                currentSelectedIndex = 0;
+                list_Video.SelectedIndex = 0;
+                item = list_Video.Items[currentSelectedIndex] as VideoItem;
+                if (item != null)
+                    Open(item);
+            }
+            else if (currentSelectedIndex > 0)
+            {
+                item = list_Video.Items[currentSelectedIndex - 1] as VideoItem;
+                if (item != null)
+                    Open(item);
             }
         }
         #endregion
@@ -495,10 +590,30 @@ namespace ZtiPlayer
             ShowOpenUrlDialog();
         }
 
+        private void menu_Screenshot_Click(object sender, RoutedEventArgs e)
+        {
+            ScreenShot();
+        }
+
         private void ContextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             InvalidateContextMenu();
         }
-        #endregion       
+
+        private void menu_ClearPlayList_Click(object sender, RoutedEventArgs e)
+        {
+            ClearPlayList();
+        }
+
+        private void btn_PlayNext_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_PlayPrevious_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion      
     }
 }

@@ -89,14 +89,32 @@ namespace ZtiPlayer.Utils
             return list;
         }
 
-        public void AddToPlayList(VideoItem videoItem)
+        public void ClearPlayList()
         {
+            try
+            {
+                doc.Root.Elements().Remove();
+                doc.Save(filePath);
+            }
+            catch(Exception ex)
+            {
+                //TODO
+            }
+        }
+
+        public List<VideoItem> AddToPlayList(VideoItem videoItem)
+        {
+            List<VideoItem> list = LoadPlayList();
+            if (list.Exists(x=>x.Name == videoItem.Name || x.Path == videoItem.Path))
+                return list;
             doc.Root.Add(new XElement("Item",
                 new XElement("Name", videoItem.Name),
                 new XElement("Path",videoItem.Path),
                 new XElement("Type",videoItem.Type),
                 new XElement("Duration", videoItem.Duration.Milliseconds)));
             doc.Save(filePath);
+            list.Add(videoItem);
+            return list;
         }
     }
 }

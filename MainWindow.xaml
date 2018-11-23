@@ -14,6 +14,42 @@
         <Storyboard x:Key="HideVideoListAnimation">
             <DoubleAnimation Storyboard.TargetName="grid_List" Storyboard.TargetProperty="Width" To="0" Duration="0:0:0.5"/>
         </Storyboard>
+
+        <ContextMenu x:Key="contextMenu" Style="{StaticResource ContextMenuStyle}" ItemContainerStyle="{StaticResource StyleMenuItem}">
+            <MenuItem Header="全屏"/>
+            <MenuItem Header="打开" ItemContainerStyle="{StaticResource StyleMenuItem}">
+                <MenuItem Header="打开本地文件"  Click="menu_OpenLocal_Click"/>
+                <MenuItem Header="打开网络URL"  Click="menu_OpenNetwork_Click"/>
+            </MenuItem>
+            <MenuItem Header="关闭" />
+            <MenuItem Header="播放列表" ItemContainerStyle="{StaticResource StyleMenuItem}">
+                <MenuItem Header="显示播放列表" />
+                <MenuItem Header="隐藏播放列表" />
+                <MenuItem Header="清除播放列表" Name="menu_ClearPlayList" Click="menu_ClearPlayList_Click"/>
+                <Separator Style="{x:Null}"></Separator>
+                <MenuItem Header="导出播放列表" />
+                <MenuItem Header="导入播放列表" />
+            </MenuItem>
+            <Separator Style="{x:Null}"></Separator>
+            <MenuItem Header="播放" ItemContainerStyle="{StaticResource StyleMenuItem}">
+                <MenuItem Header="播放"/>
+                <MenuItem Header="暂停"/>
+                <MenuItem Header="停止"/>
+                <MenuItem Header="下一个"/>
+                <MenuItem Header="上一个"/>
+                <MenuItem Header="快进" ItemContainerStyle="{StaticResource StyleMenuItem}" Foreground="Black">
+                    <MenuItem Header="正常"/>
+                    <MenuItem Header="1.2X"/>
+                    <MenuItem Header="1.5X"/>
+                    <MenuItem Header="2.0X"/>
+                    <MenuItem Header="4.0X"/>
+                    <MenuItem Header="8.0X"/>
+                    <MenuItem Header="16.0X"/>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="截图" Name="menu_Screenshot" Click="menu_Screenshot_Click"/>
+            <MenuItem Header="文件属性"/>
+        </ContextMenu>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -121,8 +157,8 @@
                     </Grid.ColumnDefinitions>
 
                     <local:ImageButton Width="65" Height="65" Image="../Icon/play.png"  Click="btn_Pause_Click"  x:Name="btn_Pause"/>
-                    <local:ImageButton Width="60" Height="60" Image="../Icon/previous.png" HorizontalAlignment="Left" />
-                    <local:ImageButton Width="60" Height="60" Image="../Icon/next.png" HorizontalAlignment="Right"/>
+                    <local:ImageButton Width="60" Height="60" Image="../Icon/previous.png" HorizontalAlignment="Left" x:Name="btn_PlayPrevious" Click="btn_PlayPrevious_Click"/>
+                    <local:ImageButton Width="60" Height="60" Image="../Icon/next.png" HorizontalAlignment="Right" x:Name="btn_PlayNext" Click="btn_PlayNext_Click"/>
 
                     <local:ImageButton Width="50" Height="50" Image="../Icon/stop.png" HorizontalAlignment="Left" Grid.Column="1" x:Name="btn_Stop" Click="btn_Stop_Click" Margin="20,0,0,0"/>
                     <local:ImageButton Width="30" Height="30" Image="../Icon/sound.png" HorizontalAlignment="Left" Grid.Column="1" Margin="215,0,0,0" x:Name="btn_Volume" Click="btn_Volume_Click"/>

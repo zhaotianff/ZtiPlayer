@@ -70,6 +70,15 @@
                             <Setter Property="Foreground" Value="White"></Setter>
                             <Setter Property="Background" Value="#bbbcbe" TargetName="border"/>
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsHighlighted" Value="false" />
+                                <Condition Property="Role" Value="SubMenuItem" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Foreground" Value="Black"></Setter>
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
                         <Trigger Property="IsPressed" Value="true">
 
                         </Trigger>
