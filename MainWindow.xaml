@@ -16,7 +16,7 @@
         </Storyboard>
 
         <ContextMenu x:Key="contextMenu" Style="{StaticResource ContextMenuStyle}" ItemContainerStyle="{StaticResource StyleMenuItem}">
-            <MenuItem Header="全屏"/>
+            <MenuItem Header="全屏" Name="menu_Fullscreen" Click="menu_Fullscreen_Click"/>
             <MenuItem Header="打开" ItemContainerStyle="{StaticResource StyleMenuItem}">
                 <MenuItem Header="打开本地文件"  Click="menu_OpenLocal_Click"/>
                 <MenuItem Header="打开网络URL"  Click="menu_OpenNetwork_Click"/>
@@ -32,12 +32,12 @@
             </MenuItem>
             <Separator Style="{x:Null}"></Separator>
             <MenuItem Header="播放" ItemContainerStyle="{StaticResource StyleMenuItem}">
-                <MenuItem Header="播放"/>
-                <MenuItem Header="暂停"/>
-                <MenuItem Header="停止"/>
-                <MenuItem Header="下一个"/>
-                <MenuItem Header="上一个"/>
-                <MenuItem Header="快进" ItemContainerStyle="{StaticResource StyleMenuItem}" Foreground="Black">
+                <MenuItem Header="播放" Name="menu_Play" Click="menu_Play_Click"/>
+                <MenuItem Header="暂停" Name="menu_Pause" Click="menu_Pause_Click"/>
+                <MenuItem Header="停止" Name="menu_Stop" Click="menu_Stop_Click"/>
+                <MenuItem Header="下一个" Name="menu_Next" Click="menu_Next_Click"/>
+                <MenuItem Header="上一个" Name="menu_Previous" Click="menu_Previous_Click"/>
+                <MenuItem Header="快进" ItemContainerStyle="{StaticResource StyleMenuItem}" Foreground="Black" Visibility="Hidden">
                     <MenuItem Header="正常"/>
                     <MenuItem Header="1.2X"/>
                     <MenuItem Header="1.5X"/>
@@ -48,7 +48,7 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="截图" Name="menu_Screenshot" Click="menu_Screenshot_Click"/>
-            <MenuItem Header="文件属性"/>
+            <MenuItem Header="文件属性" Name="menu_Property" Click="menu_Property_Click"/>
         </ContextMenu>
     </Window.Resources>
     <Grid>

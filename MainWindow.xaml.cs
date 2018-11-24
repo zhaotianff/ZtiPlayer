@@ -33,7 +33,8 @@ namespace ZtiPlayer
         System.Windows.Controls.ContextMenu contextMenu;
 
         int elapsedTime = 0;
-        int videoType = 0;
+        int videoType = 0;//0-Local 1-Web 2-Other
+        int playType = 0; //0-exist 1-add
         int currentSelectedIndex = -1;
         string videoPath = "";
 
@@ -42,6 +43,12 @@ namespace ZtiPlayer
         {
             InitializeComponent();           
             Init();        
+        }
+
+        public MainWindow(StartupArgs args)
+        {
+            InitializeComponent();
+            Init();
         }
 
         private void Init()
@@ -264,12 +271,13 @@ namespace ZtiPlayer
                 videoPath = openDialog.FileName;
                 player.Open(videoPath);
                 player.Play();
+                playType = 1;
             }           
         }
 
         private void OpenNetworkFile()
         {
-
+            
         }
 
         private void Open(VideoItem item)
@@ -320,17 +328,7 @@ namespace ZtiPlayer
             this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
 
             HideNavigationButton();
-
-            //TODO mistake
-            VideoItem videoItem = new VideoItem();
-            videoItem.Name = GetVideoName(videoPath);
-            videoItem.Path = videoPath;
-            videoItem.Type = videoType;
-            videoItem.Duration =TimeSpan.FromMilliseconds( durationMillionSeconds);
-            var playlist = playlistXmlHelper.AddToPlayList(videoItem);
-            this.list_Video.ItemsSource = playlist;
-            currentSelectedIndex = playlist.Count - 1;
-            list_Video.SelectedIndex = currentSelectedIndex;
+            UpdatePlayList();           
         }
 
         private void ClearPlayList()
@@ -374,6 +372,26 @@ namespace ZtiPlayer
                 this.lbl_Elapsed.Content = GetTimeString(elapsedTime);              
                 this.slider_Progress.Value = elapsedTime/1000;
             });
+        }
+
+        private void UpdatePlayList()
+        {
+            if (playType == 1)
+            {
+                VideoItem videoItem = new VideoItem();
+                videoItem.Name = GetVideoName(videoPath);
+                videoItem.Path = videoPath;
+                videoItem.Type = videoType;
+                videoItem.Duration = TimeSpan.FromMilliseconds(player.GetDuration());
+                var playlist = playlistXmlHelper.AddToPlayList(videoItem);
+                this.list_Video.ItemsSource = playlist;
+                currentSelectedIndex = playlist.Count - 1;
+                list_Video.SelectedIndex = currentSelectedIndex;
+            }
+            else
+            {
+                currentSelectedIndex = list_Video.SelectedIndex;
+            }
         }
 
         private void HandleStateChange(int oldState,int newState)
@@ -510,6 +528,7 @@ namespace ZtiPlayer
                     //TODO Check if resource is available
                     player.Open(item.Path);
                     player.Play();
+                    playType = 0;           
                 }
             }
         }
@@ -607,13 +626,53 @@ namespace ZtiPlayer
 
         private void btn_PlayNext_Click(object sender, RoutedEventArgs e)
         {
-
+            PlayNext();
         }
 
         private void btn_PlayPrevious_Click(object sender, RoutedEventArgs e)
         {
+            PlayPrevious();
+        }
+
+        private void menu_Property_Click(object sender, RoutedEventArgs e)
+        {
 
         }
-        #endregion      
+
+        private void menu_Next_Click(object sender, RoutedEventArgs e)
+        {
+            PlayNext();
+        }
+
+        private void menu_Previous_Click(object sender, RoutedEventArgs e)
+        {
+            PlayPrevious();
+        }
+
+        private void menu_Stop_Click(object sender, RoutedEventArgs e)
+        {
+            StopPlay();
+        }
+
+        private void menu_Pause_Click(object sender, RoutedEventArgs e)
+        {
+            player.Pause();
+            this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/play.png");
+        }
+
+        private void menu_Play_Click(object sender, RoutedEventArgs e)
+        {
+            player.Play();
+            this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
+        }
+
+        private void menu_Fullscreen_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO
+        }
+
+        #endregion
+
+
     }
 }
