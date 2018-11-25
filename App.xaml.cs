@@ -50,6 +50,26 @@ namespace ZtiPlayer
             else
             {
                 startArgs.ArgsCount = args.Length / 2;
+                Dictionary<string, string> argsDic = new Dictionary<string, string>();
+                for (int i = 0; i < args.Length; i+=2)
+                {
+                    if (argsDic.ContainsKey(args[i]))
+                        continue;
+                    argsDic.Add(args[i], args[i + 1]);
+                }
+                try
+                {
+                    startArgs.Height = Convert.ToInt32(argsDic[startArgs.Height.GetType().Name]);  //TODO
+                    startArgs.Width = Convert.ToInt32(argsDic[startArgs.Width.GetType().Name]);
+                    startArgs.IsSilent = Convert.ToBoolean(argsDic[startArgs.IsSilent.GetType().Name]);
+                    startArgs.Path = argsDic[startArgs.Path.GetType().Name];
+                    startArgs.PlayList = new string[] { };//TODO
+                    startArgs.Volume = Convert.ToInt32(argsDic[startArgs.Volume.GetType().Name]);                
+                }
+                catch(Exception ex)
+                {
+                    //TODO
+                }
             }
 
             StartApplication(startArgs);

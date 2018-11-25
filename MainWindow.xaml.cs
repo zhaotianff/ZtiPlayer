@@ -49,6 +49,7 @@ namespace ZtiPlayer
         {
             InitializeComponent();
             Init();
+
         }
 
         private void Init()
@@ -479,6 +480,11 @@ namespace ZtiPlayer
                 if (item != null)
                     Open(item);
             }
+        }
+
+        private void ParseArgs(StartupArgs args)
+        {
+
         }
         #endregion
 
