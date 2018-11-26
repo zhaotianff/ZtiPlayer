@@ -50,6 +50,10 @@ namespace ZtiPlayer
             else
             {
                 startArgs.ArgsCount = args.Length / 2;
+                if (args.Contains("-help") || args.Contains("/help") || args.Contains("/?"))
+                    ShowHelpMessageBox();
+
+
                 Dictionary<string, string> argsDic = new Dictionary<string, string>();
                 for (int i = 0; i < args.Length; i+=2)
                 {
@@ -89,6 +93,22 @@ namespace ZtiPlayer
             main.Show();
         }
 
+        private void ShowHelpMessageBox()
+        {
+            string msg = ""
+                + "- Path           Open designated path\n"
+                + "- Playlist        Import video list,separated by semicolon\n"
+                + "- Width         Set player width\n"
+                + "- Height        Set player height\n"
+                + "- Silient         Make player silent\n"
+                + "- Volume       Set player volume\n"
+                + "- Help           Show help info\n";
+
+
+            MessageBox.Show(msg,"Usage");
+            Environment.Exit(0);
+        }
+
         private void StartReceiveMessageThread()
         {
 
@@ -106,7 +126,8 @@ namespace ZtiPlayer
             var result = processArray.Count(x => x.ProcessName == currentprocess.ProcessName);
             if(result > 1)
             {
-                Application.Current.Shutdown(0);
+                //Application.Current.Shutdown(0);
+                Environment.Exit(0);
             }
         }
     }

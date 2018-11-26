@@ -49,7 +49,7 @@ namespace ZtiPlayer
         {
             InitializeComponent();
             Init();
-
+            ParseArgs(args);
         }
 
         private void Init()
@@ -276,9 +276,29 @@ namespace ZtiPlayer
             }           
         }
 
+        private void OpenLocalFile(string path)
+        {
+            VideoItem item = new VideoItem();
+            item.Path = path;
+            item.Type = 0;
+            videoType = 0;
+            item.Name = GetVideoName(path);
+            Open(item);
+        }
+
         private void OpenNetworkFile()
         {
             
+        }
+
+        private void OpenNetworkFile(string path)
+        {
+            VideoItem item = new VideoItem();
+            item.Path = path;
+            item.Type = 1;
+            videoType = 1;
+            item.Name = GetVideoName(path);
+            Open(item);
         }
 
         private void Open(VideoItem item)
@@ -336,6 +356,7 @@ namespace ZtiPlayer
         {
             this.list_Video.ItemsSource = null;
             playlistXmlHelper.ClearPlayList();
+            currentSelectedIndex = -1;
         }
 
         private string GetTimeString(int millionSeconds)
@@ -484,7 +505,37 @@ namespace ZtiPlayer
 
         private void ParseArgs(StartupArgs args)
         {
-
+            if(args.ArgsCount > 0)
+            {
+                //TODO 
+                try
+                {
+                    if (args.Width > 500 && args.Width < SystemParameters.PrimaryScreenWidth)
+                    {
+                        this.Width = args.Width;
+                    }
+                    if (args.Height > 300 && args.Height < SystemParameters.PrimaryScreenHeight)
+                    {
+                        this.Height = args.Height;
+                    }
+                    if (args.Volume >= 0 && args.Volume <= 100)
+                    {
+                        this.player.SetVolume(args.Volume);
+                    }
+                    if(!string.IsNullOrEmpty(args.Path))
+                    {
+                        var tempPath = args.Path.ToLower();
+                        if (tempPath.StartsWith("http") || tempPath.StartsWith("https") || tempPath.StartsWith("ftp"))
+                            OpenNetworkFile(tempPath);
+                        else
+                            OpenLocalFile(tempPath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //TODO
+                }
+            }
         }
         #endregion
 
@@ -677,8 +728,22 @@ namespace ZtiPlayer
             //TODO
         }
 
+
+        private void menu_OpenFileLocation_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void menu_DeleteChoose_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void menu_PlayChoose_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         #endregion
-
-
     }
 }
