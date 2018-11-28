@@ -17,11 +17,17 @@ Run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and r
   * sound format(wav,mp3,flac,ape,ogg)
 ## Usage(Startup args)
         -Path              open designated path
+        
         -Playlist          import video list,separated by semicolon 
+        
         -Width             set player width
+        
         -Height            set player height
+        
         -Silient           make player silent
+        
         -Volume            set player volume
+        
         -Help              show help info
 
 ## ScreenShot
