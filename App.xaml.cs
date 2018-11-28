@@ -111,12 +111,12 @@ namespace ZtiPlayer
 
         private void StartReceiveMessageThread()
         {
-
+            //TODO
         }
 
         private void ReceiveMessage()
         {
-
+            //TODO
         }
 
         private void CheckSingleInstance()
