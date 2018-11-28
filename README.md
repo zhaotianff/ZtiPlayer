@@ -1,16 +1,28 @@
 # ZtiPlayer
 
-powered by aplyer engine(http://aplayer.open.xunlei.com)
+Powered by aplyer engine(http://aplayer.open.xunlei.com)
 
-if you want to use for business,you must get the authorization(free)
+If you want to use for business,you must get the authorization(free)
 
 ## Install
-run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and register player library
+Run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and register player library
 
 ## Features
+* Play local multimedia files,Supported format 
 
-## Usage
-
+  * video format(mp4,avi,rmvb,flv)
+  
+  * image format(jpg,png,bmp)
+  
+  * sound format(wav,mp3,flac,ape,ogg)
+## Usage(Startup args)
+        -Path              open designated path
+        -Playlist          import video list,separated by semicolon 
+        -Width             set player width
+        -Height            set player height
+        -Silient           make player silent
+        -Volume            set player volume
+        -Help              show help info
 
 ## ScreenShot
 <p align="center">
@@ -22,6 +34,14 @@ run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and r
 <p align="center">
         <img src="https://github.com/zhaotianff/ZtiPlayer/blob/master/ScreenShots/3.jpg" align="center" alt="start up"/>
 </p>
+
+## Library Dependencies
+* APlayer Engine
+  * [ffmpeg](http://ffmpeg.org/)
+  * [zlib](http://www.zlib.net/)
+  * [libpng](http://www.libpng.org/)
+  * [dlib](http://dlib.net/)
+* Main Program
 
 ## License
 
