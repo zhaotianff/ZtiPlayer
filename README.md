@@ -4,7 +4,15 @@ powered by aplyer engine(http://aplayer.open.xunlei.com)
 
 if you want to use for business,you must get the authorization(free)
 
-##   ScreenShot
+## Install
+run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and register player library
+
+## Features
+
+## Usage
+
+
+## ScreenShot
 <p align="center">
         <img src="https://github.com/zhaotianff/ZtiPlayer/blob/master/ScreenShots/1.jpg" align="center" alt="start up"/>
 </p>
