@@ -5,17 +5,31 @@ Powered by aplyer engine(http://aplayer.open.xunlei.com)
 If you want to use for business,you must get the authorization(free)
 
 ## Install
-Run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and register player library
+Run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and register player library(updating)
 
 ## Features
-* Play local multimedia files,Supported format 
+* Play local multimedia files,supported format 
 
-  * video format(mp4,avi,rmvb,flv)
+  * video format(full format)
   
-  * image format(jpg,png,bmp)
+  * image format(jpg,png,bmp...)
   
-  * sound format(wav,mp3,flac,ape,ogg)
-## Usage(Startup args)
+  * sound format(wav,mp3,flac,ape,ogg...)
+* Play network file,supported protocol
+  * Ftp
+  * Http/Https
+  * BT link(updaing)
+  * Torrent file(updaing)
+* Screenshot
+* Crop Video(updaing)
+* Gif convert(updaing)
+* Parameter start(updaing)
+* Change skin(updaing)
+* File download
+* File association
+* Subtitle
+* Play with hardware acceleration
+## Usage(Startup args)(updaing)
         -Path              open designated path
         
         -Playlist          import video list,separated by semicolon 
