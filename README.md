@@ -2,10 +2,10 @@
 
 Powered by aplyer engine(http://aplayer.open.xunlei.com)
 
-If you want to use for business,you must get the authorization(free)
+If you want to use for business,you must get the authorization(**free**)
 
 ## Install
-Run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and register player library(updating)
+Run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and register player library(**updating**)
 
 ## Features
 * Play local multimedia files,supported format 
@@ -17,18 +17,18 @@ Run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and r
   * sound format(wav,mp3,flac,ape,ogg...)
 * Play network file,supported protocols
   * Http/Https/Ftp/Mms/Rtsp/Rtmp/Hls
-  * BT link(updaing)
-  * Torrent file(updaing)
+  * BT link(**updating**)
+  * Torrent file(**updating**)
 * Screenshot
-* Crop Video(updaing)
-* Gif convert(updaing)
-* Parameter start(updaing)
-* Change skin(updaing)
-* File download
-* File association
-* Subtitle
-* Play with hardware acceleration
-* Face detect
+* Crop Video(**updating**)
+* Gif convert(**updating**)
+* Parameter start(**updating**)
+* Change skin(**updating**)
+* File download(**updating**)
+* File association(**updating**)
+* Subtitle(**updating**)
+* Play with hardware acceleration(**updating**)
+* Face detect(**updating**)
 ## Usage(Startup args)(updaing)
         -Path              open designated path
         
