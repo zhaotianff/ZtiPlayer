@@ -294,6 +294,10 @@ namespace ZtiPlayer
         private void OpenNetworkFile(string path)
         {
             VideoItem item = new VideoItem();
+            if(!(path.StartsWith("https") || path.StartsWith("http") || path.StartsWith("ftp")))
+            {
+                path = "http://" + path;
+            }
             item.Path = path;
             item.Type = 1;
             videoType = 1;
@@ -314,7 +318,8 @@ namespace ZtiPlayer
             OpenURLDialog openURLDialog = new OpenURLDialog(list);
             if(openURLDialog.ShowDialog().Value == true)
             {
-                HideNavigationButton();                
+                HideNavigationButton();
+                OpenNetworkFile(openURLDialog.Url);              
             }
         }
 

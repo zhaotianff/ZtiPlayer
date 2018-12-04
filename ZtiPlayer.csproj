@@ -71,6 +71,7 @@
       <DependentUpon>OpenURLDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\GlobalData.cs" />
+    <Compile Include="Utils\LanguageManager.cs" />
     <Compile Include="Utils\PlayerHelper.cs" />
     <Compile Include="Utils\PlayerStateEnum.cs" />
     <Compile Include="Utils\Win32Message.cs" />
@@ -90,6 +91,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="OpenURLDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Str\en-US.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Str\zh-CN.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
