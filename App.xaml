@@ -4,6 +4,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Str/zh-cn.xaml"/>
+
                 <ResourceDictionary Source="Style/WindowStyle.xaml"/>
                 <ResourceDictionary Source="Themes/Generic.xaml"/>
                 
