@@ -149,6 +149,7 @@
             <Grid Grid.Row="1" >
                 <Label HorizontalAlignment="Right" VerticalAlignment="Top"  Name="lbl_Duration" FontFamily="{StaticResource default}"/>
                 <Label HorizontalAlignment="Left"  VerticalAlignment="Top"  Name="lbl_Elapsed" FontFamily="{StaticResource default}"/>
+                <Label HorizontalAlignment="Left" VerticalAlignment="Top" Name="lbl_BufferState" FontFamily="{StaticResource default}" Margin="80,0,0,0"/>
 
                 <Grid Width="620">
                     <Grid.ColumnDefinitions>
@@ -163,12 +164,6 @@
                     <local:ImageButton Width="50" Height="50" Image="../Icon/stop.png" HorizontalAlignment="Left" Grid.Column="1" x:Name="btn_Stop" Click="btn_Stop_Click" Margin="20,0,0,0"/>
                     <local:ImageButton Width="30" Height="30" Image="../Icon/sound.png" HorizontalAlignment="Left" Grid.Column="1" Margin="215,0,0,0" x:Name="btn_Volume" Click="btn_Volume_Click"/>
                     <Slider Width="120" Height="10" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" Name="slider_Volume" Minimum="0" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" Thumb.DragCompleted="slider_Volume_DragCompleted" ToolTip="{Binding ElementName=slider_Volume,Path=Value}" Style="{StaticResource SliderForVolumeStyle}"/>
-                </Grid>
-                
-                
-
-                <Grid Width="600">                                               
-                    <Label HorizontalAlignment="Left" Margin="80,0,0,0" VerticalAlignment="Center" Name="lbl_BufferState"/>
                 </Grid>
 
                 <local:ImageButton Width="60" Height="60" HorizontalAlignment="Right" Image="../Icon/list.png" Margin="0,0,10,0" x:Name="btn_List" Click="ImageButton_Click"/>

@@ -251,7 +251,14 @@ namespace ZtiPlayer
         private void Buffering(int nPercent)
         {
             Dispatcher.Invoke(()=> {
-                this.lbl_BufferState.Content = "正在缓冲" + nPercent + "%d";
+                if(nPercent == 100)
+                {
+                    this.lbl_BufferState.Content = "";
+                }
+                else
+                {
+                    this.lbl_BufferState.Content = "正在缓冲" + nPercent + "%";
+                }             
             });
         }
 

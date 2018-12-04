@@ -42,35 +42,55 @@ namespace ZtiPlayer
 
         private void ParseArgs(string[] args)
         {
-            StartupArgs startArgs = new StartupArgs();
+            StartupArgs startArgs = new StartupArgs()
+            {
+                Height = 768,
+                Width = 1024,
+                IsSilent = false,
+                Path = "",
+                PlayList = new string[] { },
+                Volume = 50
+            };
+
             if(args.Length == 0)
             {
                 startArgs.ArgsCount = 0;
             }
             else
             {
-                startArgs.ArgsCount = args.Length / 2;
-                if (args.Contains("-help") || args.Contains("/help") || args.Contains("/?"))
-                    ShowHelpMessageBox();
-
-
-                Dictionary<string, string> argsDic = new Dictionary<string, string>();
-                for (int i = 0; i < args.Length; i+=2)
-                {
-                    if (argsDic.ContainsKey(args[i]))
-                        continue;
-                    argsDic.Add(args[i], args[i + 1]);
-                }
                 try
                 {
-                    startArgs.Height = Convert.ToInt32(argsDic[startArgs.Height.GetType().Name]);  //TODO
-                    startArgs.Width = Convert.ToInt32(argsDic[startArgs.Width.GetType().Name]);
-                    startArgs.IsSilent = Convert.ToBoolean(argsDic[startArgs.IsSilent.GetType().Name]);
-                    startArgs.Path = argsDic[startArgs.Path.GetType().Name];
-                    startArgs.PlayList = new string[] { };//TODO
-                    startArgs.Volume = Convert.ToInt32(argsDic[startArgs.Volume.GetType().Name]);                
+                    startArgs.ArgsCount = args.Length / 2;
+                    if (args.Contains("-help") || args.Contains("/help") || args.Contains("/?"))
+                        ShowHelpMessageBox();
+
+
+                    Dictionary<string, string> argsDic = new Dictionary<string, string>();
+                    for (int i = 0; i < args.Length; i += 2)
+                    {
+                        if (argsDic.ContainsKey(args[i]))
+                            continue;
+                        var key = args[i].ToUpper().Trim().Replace("--", "").Replace("-", "").Replace("/", "");
+                        argsDic.Add(key, args[i + 1]);
+                    }
+
+                    if (argsDic.Keys.Contains("HEIGHT"))
+                    {
+                        startArgs.Height = Convert.ToInt32(argsDic["HEIGHT"]);  //TODO
+                    }
+                    if (argsDic.Keys.Contains("WIDTH"))
+                    {
+                        startArgs.Width = Convert.ToInt32(argsDic["WIDTH"]);
+                    }
+                    //startArgs.IsSilent = Convert.ToBoolean(argsDic[startArgs.IsSilent.GetType().Name]);
+                    if (argsDic.Keys.Contains("PATH"))
+                    {
+                        startArgs.Path = argsDic["PATH"];
+                    }
+                    //startArgs.PlayList = new string[] { };//TODO
+                    //startArgs.Volume = Convert.ToInt32(argsDic[startArgs.Volume.GetType().Name]);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     //TODO
                 }
