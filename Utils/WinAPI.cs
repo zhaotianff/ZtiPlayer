@@ -31,6 +31,15 @@ namespace ZtiPlayer.Utils
         public IntPtr hProcess;
     }
 
+    struct KBDLLHOOKSTRUCT
+    {
+        int vkCode;
+        int scanCode;
+        int flags;
+        int time;
+        IntPtr dwExtraInfo;
+    }
+
     class WinAPI
     {      
         [DllImport("User32.dll")]
@@ -55,5 +64,7 @@ namespace ZtiPlayer.Utils
             info.fMask = SEE_MASK_INVOKEIDLIST;
             ShellExecuteEx(ref info);
         }
+
+        
     }
 }

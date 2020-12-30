@@ -10,5 +10,6 @@ namespace ZtiPlayer.Utils
     {
         public const int WM_RBUTTONDOWN = 0x0204;
         public const int WM_LBUTTONDBLCLK = 0x0203;
+        public const int WM_LBUTTONDOWN = 0x0201;
     }
 }

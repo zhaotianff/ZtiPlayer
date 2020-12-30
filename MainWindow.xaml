@@ -23,8 +23,7 @@
             </MenuItem>
             <MenuItem Header="关闭" Click="menu_Close_Click" />
             <MenuItem Header="播放列表" ItemContainerStyle="{StaticResource StyleMenuItem}">
-                <MenuItem Header="显示播放列表" />
-                <MenuItem Header="隐藏播放列表" />
+                <MenuItem Header="显示/隐藏播放列表" Click="menu_ShowOrHidePlaylist_Click"/>
                 <MenuItem Header="清除播放列表" Name="menu_ClearPlayList" Click="menu_ClearPlayList_Click"/>
                 <Separator Style="{x:Null}"></Separator>
                 <MenuItem Header="导出播放列表" />

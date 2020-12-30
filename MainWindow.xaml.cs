@@ -486,6 +486,9 @@ namespace ZtiPlayer
 
         private void PlayNext()
         {
+            if (list_Video.Items.Count == 0)
+                return;
+
             VideoItem item = new VideoItem();
             if(CurrentSelectedIndex == -1)
             {
@@ -608,6 +611,44 @@ namespace ZtiPlayer
             this.grid_Function.Height = 110;
             this.WindowState = System.Windows.WindowState.Normal;
         }
+        private void PlayOrPause()
+        {
+            if (player.GetState() == (int)PlayState.PS_PLAY)
+            {
+                player.Pause();
+                this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/play.png");
+            }
+            else if (player.GetState() == (int)PlayState.PS_PAUSED)
+            {
+                player.Play();
+                this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
+            }
+        }
+        int MyHookProc(int code, IntPtr wParam, IntPtr lParam)
+        {
+            //LPKBDLLHOOKSTRUCT hookStruct = (LPKBDLLHOOKSTRUCT)lParam;
+            //if (code == HC_ACTION)
+            //{
+            //    switch (wParam)
+            //    {
+            //        case WM_KEYDOWN:
+            //        case WM_SYSKEYDOWN:
+            //        case WM_KEYUP:
+            //        case WM_SYSKEYUP:
+            //            if (hookStruct->vkCode == VK_LWIN || hookStruct->vkCode == VK_RWIN ||
+            //                  (hookStruct->vkCode == VK_ESCAPE) && ((GetKeyState(VK_CONTROL) & 0x8000) != 0))
+            //            {
+            //                return 1;
+            //            }
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //}
+            //return LRESULT();
+
+            return 0;
+        }
         #endregion
 
         #region Event
@@ -669,16 +710,7 @@ namespace ZtiPlayer
 
         private void btn_Pause_Click(object sender, RoutedEventArgs e)
         {
-            if(player.GetState() == (int)PlayState.PS_PLAY)
-            {
-                player.Pause();
-                this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/play.png");
-            }
-            else if(player.GetState() == (int)PlayState.PS_PAUSED)
-            {
-                player.Play();
-                this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
-            }
+            PlayOrPause();
         }
 
         private void slider_Volume_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
@@ -828,6 +860,10 @@ namespace ZtiPlayer
         private void menu_Close_Click(object sender, RoutedEventArgs e)
         {
             StopPlay();
+        }
+        private void menu_ShowOrHidePlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOrHideVideoList();
         }
         #endregion
 
