@@ -4,7 +4,7 @@
         xmlns:aplayer="clr-namespace:AxAPlayer3Lib;assembly=AxInterop.APlayer3Lib"
         xmlns:local="clr-namespace:ZtiPlayer"
         xmlns:winform="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
-        Title="ZtiPlayer" Height="720" Width="1080" Icon="logo.png" WindowStartupLocation="CenterScreen" StateChanged="Window_StateChanged"      
+        Title="ZtiPlayer" Height="720" Width="1080" Icon="logo.png" WindowStartupLocation="CenterScreen"      
         KeyDown="Window_KeyDown" Style="{StaticResource newStyle}" FontFamily="{StaticResource muyao}">
     <Window.Resources>
         <Storyboard x:Key="ShowVideoListAnimation">
@@ -16,12 +16,12 @@
         </Storyboard>
 
         <ContextMenu x:Key="contextMenu" Style="{StaticResource ContextMenuStyle}" ItemContainerStyle="{StaticResource StyleMenuItem}">
-            <MenuItem Header="全屏" Name="menu_Fullscreen" Click="menu_Fullscreen_Click"/>
+            <MenuItem Header="全屏/恢复" Name="menu_Fullscreen" Click="menu_Fullscreen_Click"/>
             <MenuItem Header="打开" ItemContainerStyle="{StaticResource StyleMenuItem}">
                 <MenuItem Header="打开本地文件"  Click="menu_OpenLocal_Click"/>
                 <MenuItem Header="打开网络URL"  Click="menu_OpenNetwork_Click"/>
             </MenuItem>
-            <MenuItem Header="关闭" />
+            <MenuItem Header="关闭" Click="menu_Close_Click" />
             <MenuItem Header="播放列表" ItemContainerStyle="{StaticResource StyleMenuItem}">
                 <MenuItem Header="显示播放列表" />
                 <MenuItem Header="隐藏播放列表" />
@@ -39,9 +39,11 @@
                 <MenuItem Header="上一个" Name="menu_Previous" Click="menu_Previous_Click"/>
             </MenuItem>
             <MenuItem Header="播放速度" ItemContainerStyle="{StaticResource StyleMenuItem}">
-                <MenuItem Header="慢速" Click="menu_PlaySpeed_Click"/>
-                <MenuItem Header="正常" Click="menu_PlaySpeed_Click"/>
-                <MenuItem Header="快速" Click="menu_PlaySpeed_Click"/>
+                <MenuItem Header="0.5" Click="menu_PlaySpeed_Click"/>
+                <MenuItem Header="1" Click="menu_PlaySpeed_Click"/>
+                <MenuItem Header="1.5" Click="menu_PlaySpeed_Click"/>
+                <MenuItem Header="2" Click="menu_PlaySpeed_Click"/>
+                <MenuItem Header="4" Click="menu_PlaySpeed_Click"/>
             </MenuItem>
             <MenuItem Header="截图" Name="menu_Screenshot" Click="menu_Screenshot_Click"/>
             <MenuItem Header="文件属性" Name="menu_Property" Click="menu_Property_Click"/>
@@ -76,99 +78,107 @@
 
             <Grid Grid.Row="0" Panel.ZIndex="1" Background="White" Width="500" x:Name="gridhost">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                   
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition  Width="*"/>
+
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                    <local:ImageButton Image="../Icon/video.png" Width="100" Height="100" VerticalAlignment="Center" x:Name="btn_OpenLocalFile" Click="btn_OpenLocalFile_Click"/>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0">
+                    <local:ImageButton Image="../Icon/video.png" Width="40" Height="40" VerticalAlignment="Center" x:Name="btn_OpenLocalFile" Click="btn_OpenLocalFile_Click"/>
                     <Label Content="打开本地文件" HorizontalAlignment="Center"/>
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <local:ImageButton Image="../Icon/cloud.png" Width="100" Height="100" VerticalAlignment="Center" x:Name="btn_OpenUrl" Click="btn_OpenUrl_Click"/>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
+                    <local:ImageButton Image="../Icon/cloud.png" Width="40" Height="40" VerticalAlignment="Center" x:Name="btn_OpenUrl" Click="btn_OpenUrl_Click"/>
                     <Label Content="打开网址" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Grid>
 
+       
             <Grid Grid.Column="1" Width="300" Background="Transparent" Name="grid_List">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition Height="45"/>
-                </Grid.RowDefinitions>
+                <Border BorderBrush="Silver" BorderThickness="1,0,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
 
-                <ListBox Width="300" Background="Transparent" BorderBrush="Transparent" Name="list_Video" MouseDoubleClick="list_Video_MouseDoubleClick" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ContextMenuOpening="ContextMenu_ContextMenuOpening">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <WrapPanel>
-                                    <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" FontSize="15"/>
-                                    <Label Height="25" VerticalAlignment="Center" Content="{Binding Duration}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" />
-                                </WrapPanel>
-                                <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Path}" FontSize="10" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" FontFamily="{StaticResource default}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
+                        <ListBox Width="300" Background="Transparent" BorderBrush="Transparent" Name="list_Video" MouseDoubleClick="list_Video_MouseDoubleClick" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ContextMenuOpening="ContextMenu_ContextMenuOpening">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <WrapPanel>
+                                            <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" FontSize="12"/>
+                                            <Label Height="25" VerticalAlignment="Center" Content="{Binding Duration}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"  />
+                                        </WrapPanel>
+                                        <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Path}" FontSize="10" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" FontFamily="{StaticResource default}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
 
-                    <ListBox.ContextMenu>
-                        <ContextMenu ItemContainerStyle="{StaticResource StyleMenuItem}" Style="{StaticResource ContextMenuStyle}" Name="contextmenu_VideoList" >
-                            <MenuItem Header="播放选中文件" Name="menu_PlayChoose" Click="menu_PlayChoose_Click"/>
-                            <MenuItem Header="删除选中文件" Name="menu_DeleteChoose" Click="menu_DeleteChoose_Click"/>
-                            <MenuItem Header="打开文件位置" Name="menu_OpenFileLocation" Click="menu_OpenFileLocation_Click"/>
-                            <MenuItem Header="文件属性" Click="menu_Property_Click"/>
-                            <MenuItem Header="清空列表" Click="menu_ClearPlayList_Click"/>
-                        </ContextMenu>
-                    </ListBox.ContextMenu>
-                </ListBox>
+                            <ListBox.ContextMenu>
+                                <ContextMenu ItemContainerStyle="{StaticResource StyleMenuItem}" Style="{StaticResource ContextMenuStyle}" Name="contextmenu_VideoList" >
+                                    <MenuItem Header="播放选中文件" Name="menu_PlayChoose" Click="menu_PlayChoose_Click"/>
+                                    <MenuItem Header="删除选中文件" Name="menu_DeleteChoose" Click="menu_DeleteChoose_Click"/>
+                                    <MenuItem Header="打开文件位置" Name="menu_OpenFileLocation" Click="menu_OpenFileLocation_Click"/>
+                                    <MenuItem Header="文件属性" Click="menu_Property_Click"/>
+                                    <MenuItem Header="清空列表" Click="menu_ClearPlayList_Click"/>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListBox>
 
-                <WrapPanel Grid.Row="1">
-                    <local:ImageButton Width="30" Height="30" HorizontalAlignment="Right" Image="../Icon/open.png" Margin="5,7,0,0" x:Name="btn_Open" Click="btn_Open_Click"/>
-                    <Popup Placement="Top" PlacementTarget="{Binding ElementName=btn_Open}" StaysOpen="False" PopupAnimation="Fade" Name="popup_OpenMenu">
-                        <StackPanel Background="White">
-                            <MenuItem Header="打开本地文件" Name="menu_OpenLocal" Click="menu_OpenLocal_Click"/>
-                            <MenuItem Header="打开网络文件" Name="menu_OpenNetwork" Click="menu_OpenNetwork_Click"/>
-                        </StackPanel>
-                    </Popup>
-                </WrapPanel>
-
-               
+                        <WrapPanel Grid.Row="1">
+                            <local:ImageButton Width="25" Height="25" HorizontalAlignment="Right" Image="../Icon/open.png" Margin="2" x:Name="btn_Open" Click="btn_Open_Click"/>
+                            <Popup Placement="Top" PlacementTarget="{Binding ElementName=btn_Open}" StaysOpen="False" PopupAnimation="Fade" Name="popup_OpenMenu">
+                                <StackPanel Background="White">
+                                    <MenuItem Header="打开本地文件" Name="menu_OpenLocal" Click="menu_OpenLocal_Click"/>
+                                    <MenuItem Header="打开网络文件" Name="menu_OpenNetwork" Click="menu_OpenNetwork_Click"/>
+                                </StackPanel>
+                            </Popup>
+                        </WrapPanel>
+                    </Grid>
+                </Border>
+                
             </Grid>
+          
+           
         </Grid>
 
 
-        <Grid Grid.Row="1" Grid.Column="0" Name="grid_Function" Height="120">
+        <Grid Grid.Row="1" Grid.Column="0" Name="grid_Function" Height="110">
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <Slider Margin="10,10,10,0" Height="10" Name="slider_Progress" Minimum="0" TickFrequency="1" Style="{StaticResource SliderStyle}"  Thumb.DragCompleted="slider_Progress_DragCompleted"></Slider>              
+                <Slider Margin="10,10,10,15" Height="5" Name="slider_Progress" Minimum="0" VerticalAlignment="Bottom" TickFrequency="1" Style="{StaticResource SliderStyle}"  Thumb.DragCompleted="slider_Progress_DragCompleted"></Slider>
+                <Label HorizontalAlignment="Right" VerticalAlignment="Bottom"  Name="lbl_Duration" FontFamily="{StaticResource default}" Margin="0,0,0,-10"/>
+                <Label HorizontalAlignment="Left"  VerticalAlignment="Bottom"  Name="lbl_Elapsed" FontFamily="{StaticResource default}" Margin="0,0,0,-10"/>
+                <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="lbl_BufferState" FontFamily="{StaticResource default}" Margin="80,0,0,-10"/>
             </Grid>
 
             <Grid Grid.Row="1" >
-                <Label HorizontalAlignment="Right" VerticalAlignment="Top"  Name="lbl_Duration" FontFamily="{StaticResource default}"/>
-                <Label HorizontalAlignment="Left"  VerticalAlignment="Top"  Name="lbl_Elapsed" FontFamily="{StaticResource default}"/>
-                <Label HorizontalAlignment="Left" VerticalAlignment="Top" Name="lbl_BufferState" FontFamily="{StaticResource default}" Margin="80,0,0,0"/>
+                <Grid Width="450" Margin="0,0,0,5">
+                    <Border CornerRadius="30" BorderThickness="1" BorderBrush="Silver">
+                        <Grid Margin="15,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
 
-                <Grid Width="620">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+                            <local:ImageButton Width="35" Height="35" Image="../Icon/play.png"  Click="btn_Pause_Click"  x:Name="btn_Pause"/>
+                            <local:ImageButton Width="30" Height="30" Image="../Icon/previous.png" HorizontalAlignment="Left" x:Name="btn_PlayPrevious" Click="btn_PlayPrevious_Click"/>
+                            <local:ImageButton Width="30" Height="30" Image="../Icon/next.png" HorizontalAlignment="Right" x:Name="btn_PlayNext" Click="btn_PlayNext_Click"/>
 
-                    <local:ImageButton Width="65" Height="65" Image="../Icon/play.png"  Click="btn_Pause_Click"  x:Name="btn_Pause"/>
-                    <local:ImageButton Width="60" Height="60" Image="../Icon/previous.png" HorizontalAlignment="Left" x:Name="btn_PlayPrevious" Click="btn_PlayPrevious_Click"/>
-                    <local:ImageButton Width="60" Height="60" Image="../Icon/next.png" HorizontalAlignment="Right" x:Name="btn_PlayNext" Click="btn_PlayNext_Click"/>
-
-                    <local:ImageButton Width="50" Height="50" Image="../Icon/stop.png" HorizontalAlignment="Left" Grid.Column="1" x:Name="btn_Stop" Click="btn_Stop_Click" Margin="20,0,0,0"/>
-                    <local:ImageButton Width="30" Height="30" Image="../Icon/sound.png" HorizontalAlignment="Left" Grid.Column="1" Margin="215,0,0,0" x:Name="btn_Volume" Click="btn_Volume_Click"/>
-                    <Slider Width="120" Height="10" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="1" Name="slider_Volume" Minimum="0" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" Thumb.DragCompleted="slider_Volume_DragCompleted" ToolTip="{Binding ElementName=slider_Volume,Path=Value}" Style="{StaticResource SliderForVolumeStyle}"/>
+                            <local:ImageButton Width="20" Height="20" Image="../Icon/stop.png" HorizontalAlignment="Left" Grid.Column="1" x:Name="btn_Stop" Click="btn_Stop_Click" Margin="20,0,0,0"/>
+                            <local:ImageButton Width="20" Height="10" Image="../Icon/sound.png" HorizontalAlignment="Left" Grid.Column="1" Margin="115,0,0,0" x:Name="btn_Volume" Click="btn_Volume_Click"/>
+                            <Slider Width="120" Height="5" HorizontalAlignment="Left" Margin="145,0,0,0" VerticalAlignment="Center" Grid.Column="1" Name="slider_Volume" Minimum="0" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" Thumb.DragCompleted="slider_Volume_DragCompleted" ToolTip="{Binding ElementName=slider_Volume,Path=Value}" Style="{StaticResource SliderForVolumeStyle}"/>
+                        </Grid>
+                    </Border>
                 </Grid>
 
-                <local:ImageButton Width="60" Height="60" HorizontalAlignment="Right" Image="../Icon/list.png" Margin="0,0,10,0" x:Name="btn_List" Click="ImageButton_Click"/>
+                <local:ImageButton Width="30" Height="30" HorizontalAlignment="Right" Image="../Icon/list.png" Margin="0,0,10,0" x:Name="btn_List" Click="ImageButton_Click"/>
             </Grid>
         </Grid>
 

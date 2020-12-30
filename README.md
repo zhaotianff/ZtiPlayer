@@ -46,13 +46,16 @@ Run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and r
 
 ## ScreenShot
 <p align="center">
-        <img src="https://github.com/zhaotianff/ZtiPlayer/blob/master/ScreenShots/1.jpg" align="center" alt="start up"/>
+        <img src="https://github.com/zhaotianff/ZtiPlayer/blob/master/ScreenShots/1.png" align="center" alt="start up"/>
 </p>
 <p align="center">
-        <img src="https://github.com/zhaotianff/ZtiPlayer/blob/master/ScreenShots/2.jpg" align="center" alt="start up"/>
+        <img src="https://github.com/zhaotianff/ZtiPlayer/blob/master/ScreenShots/2.png" align="center" alt="start up"/>
 </p>
 <p align="center">
-        <img src="https://github.com/zhaotianff/ZtiPlayer/blob/master/ScreenShots/3.jpg" align="center" alt="start up"/>
+        <img src="https://github.com/zhaotianff/ZtiPlayer/blob/master/ScreenShots/3.png" align="center" alt="start up"/>
+</p>
+<p align="center">
+        <img src="https://github.com/zhaotianff/ZtiPlayer/blob/master/ScreenShots/4.png" align="center" alt="start up"/>
 </p>
 
 ## Library Dependencies
@@ -61,7 +64,6 @@ Run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and r
   * [zlib](http://www.zlib.net/)
   * [libpng](http://www.libpng.org/)
   * [dlib](http://dlib.net/)
-* Main Program
 
 ## License
 

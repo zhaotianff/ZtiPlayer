@@ -58,7 +58,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             Padding="{TemplateBinding Padding}">
-                        <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="false">
+                        <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="false" Style="{StaticResource ScrollViewerStyle}">
                             <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </ScrollViewer>
                     </Border>

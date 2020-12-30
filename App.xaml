@@ -9,6 +9,7 @@
                 <ResourceDictionary Source="Style/WindowStyle.xaml"/>
                 <ResourceDictionary Source="Themes/Generic.xaml"/>
                 
+                <ResourceDictionary Source="Style/ScrollViewerStyle.xaml"/>
                 <ResourceDictionary Source="Style/ListBoxItem.xaml"/>
                 <ResourceDictionary Source="Style/FontStyle.xaml"/>
                 <ResourceDictionary Source="Style/ButtonStyle.xaml"/>

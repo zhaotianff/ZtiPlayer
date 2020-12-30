@@ -28,7 +28,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
-                    <Border Background="White" CornerRadius="3"  Width="30"/>
+                    <Border Background="White"  Width="30" BorderBrush="Black" BorderThickness="1"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -89,7 +89,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
-                    <Border Background="Silver" CornerRadius="3"  Width="10"/>
+                    <Border Background="White" CornerRadius="3"  Width="10"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -112,7 +112,7 @@
                                 Command="Slider.IncreaseLarge"/>
                                 </Track.IncreaseRepeatButton>
                                 <Track.Thumb>
-                                    <Thumb Style="{StaticResource ThumbStyle}"/>
+                                    <Thumb Style="{StaticResource ThumbForVolumeStyle}"/>
                                 </Track.Thumb>
                             </Track>
                         </Border>

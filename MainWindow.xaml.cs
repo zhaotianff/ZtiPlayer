@@ -26,9 +26,11 @@ namespace ZtiPlayer
         private string playlistConfigFilePath = Environment.CurrentDirectory + "\\config\\playlist.xml";
         private static readonly string ScreenShotSavePath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
         private static readonly string ScreenShotExtension = ".jpg";
-        private const string PlaySpeedSlow = "慢速";
-        private const string PlaySpeedNormal = "正常";
-        private const string PlaySpeedFast = "快速";
+        private const string PlaySpeedSlow = "0.5";
+        private const string PlaySpeedNormal = "1";
+        private const string PlaySpeedFastOnePointFive = "1.5";
+        private const string PlaySpeedFastTwice = "2";
+        private const string PlaySpeedFastFourth = "4";
 
         Storyboard showVideoListAnimation;
         Storyboard hideVideoListAnimation;
@@ -218,21 +220,13 @@ namespace ZtiPlayer
 
         private void ShowOrHideVideoList()
         {
-            if (this.grid_List.Width == 0)
+            if (grid_List.Width == 0)
             {
-                if (showVideoListAnimation != null)
-                {                               
-                    this.WindowState = System.Windows.WindowState.Normal;
-                }
-            }         
+                showVideoListAnimation?.Begin();
+            }
             else
             {
-                if (hideVideoListAnimation != null)
-                {
-                    hideVideoListAnimation.Begin();
-                    this.grid_Function.Height = 0;
-                    this.WindowState = System.Windows.WindowState.Maximized;
-                }
+                hideVideoListAnimation?.Begin();
             }
         }
 
@@ -241,7 +235,7 @@ namespace ZtiPlayer
             switch (nMessage)
             {
                 case Win32Message.WM_LBUTTONDBLCLK:
-                    ShowOrHideVideoList();
+                    FullScreenOrRestore();
                     break;
                 case Win32Message.WM_RBUTTONDOWN:
                     //TODO ContextMenu
@@ -589,40 +583,44 @@ namespace ZtiPlayer
 
             MessageBox.Show(detailVersionStr);
         }
+
+        private void FullScreenOrRestore()
+        {
+            ShowOrHideVideoList();
+            if(this.WindowState == WindowState.Maximized)
+            {
+                Restore();
+            }
+            else
+            {
+                FullScreen();
+            }         
+        }
+
+        private void FullScreen()
+        {
+            this.grid_Function.Height = 0;
+            this.WindowState = System.Windows.WindowState.Maximized;
+        }
+
+        private void Restore()
+        {
+            this.grid_Function.Height = 110;
+            this.WindowState = System.Windows.WindowState.Normal;
+        }
         #endregion
 
         #region Event
         private void ImageButton_Click(object sender, RoutedEventArgs e)
         {
-            if(grid_List.Width == 0)
-            {
-                showVideoListAnimation.Begin();
-            }
-            else
-            {
-                hideVideoListAnimation.Begin();
-            }
-
-        }
-
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            if(this.WindowState == System.Windows.WindowState.Normal)
-            {
-                this.grid_Function.Height = 120;                
-                if (grid_List.Width == 0)
-                {
-                    if (showVideoListAnimation != null)
-                        showVideoListAnimation.Begin();
-                }
-            }           
+            ShowOrHideVideoList();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
-                this.WindowState = System.Windows.WindowState.Normal;              
+                Restore();              
             }
 
         }
@@ -774,7 +772,7 @@ namespace ZtiPlayer
 
         private void menu_Fullscreen_Click(object sender, RoutedEventArgs e)
         {
-            //TODO
+            FullScreenOrRestore();
         }
 
 
@@ -815,10 +813,21 @@ namespace ZtiPlayer
                 case PlaySpeedNormal:
                     player.SetConfig((int)PlayerConfig.PlaySpeed, "100");
                     break;
-                case PlaySpeedFast:
+                case PlaySpeedFastOnePointFive:
+                    player.SetConfig((int)PlayerConfig.PlaySpeed, "150");
+                    break;
+                case PlaySpeedFastTwice:
                     player.SetConfig((int)PlayerConfig.PlaySpeed, "200");
                     break;
+                case PlaySpeedFastFourth:
+                    player.SetConfig((int)PlayerConfig.PlaySpeed, "400");
+                    break;
             }
+        }
+    
+        private void menu_Close_Click(object sender, RoutedEventArgs e)
+        {
+            StopPlay();
         }
         #endregion
 

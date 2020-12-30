@@ -18,7 +18,5 @@ namespace ZtiPlayer.Models
         public int Type { get; set; }
 
         public TimeSpan Duration { get; set; }
-
-
     }
 }
