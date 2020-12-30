@@ -8,12 +8,21 @@ namespace ZtiPlayer.Models
 {
     enum PlayerConfig
     {
+        EngineLibVersion = 1,
+
         /// <summary>
         /// Silent
         /// </summary>
         SoundSilent = 12,
 
         LogoSettings = 36,
+
+
+        /// <summary>
+        /// play speed，100-normal，>100 fast，<100 slow
+        /// </summary>
+        PlaySpeed = 104,     
+
 
         /// <summary>
         /// Screenshot

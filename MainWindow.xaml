@@ -37,18 +37,20 @@
                 <MenuItem Header="停止" Name="menu_Stop" Click="menu_Stop_Click"/>
                 <MenuItem Header="下一个" Name="menu_Next" Click="menu_Next_Click"/>
                 <MenuItem Header="上一个" Name="menu_Previous" Click="menu_Previous_Click"/>
-                <MenuItem Header="快进" ItemContainerStyle="{StaticResource StyleMenuItem}" Foreground="Black" Visibility="Hidden">
-                    <MenuItem Header="正常"/>
-                    <MenuItem Header="1.2X"/>
-                    <MenuItem Header="1.5X"/>
-                    <MenuItem Header="2.0X"/>
-                    <MenuItem Header="4.0X"/>
-                    <MenuItem Header="8.0X"/>
-                    <MenuItem Header="16.0X"/>
-                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="播放速度" ItemContainerStyle="{StaticResource StyleMenuItem}">
+                <MenuItem Header="慢速" Click="menu_PlaySpeed_Click"/>
+                <MenuItem Header="正常" Click="menu_PlaySpeed_Click"/>
+                <MenuItem Header="快速" Click="menu_PlaySpeed_Click"/>
             </MenuItem>
             <MenuItem Header="截图" Name="menu_Screenshot" Click="menu_Screenshot_Click"/>
             <MenuItem Header="文件属性" Name="menu_Property" Click="menu_Property_Click"/>
+            <Separator Style="{x:Null}"></Separator>
+            <MenuItem Header="播放器版本" ItemContainerStyle="{StaticResource StyleMenuItem}">
+                <MenuItem Header="基础信息"  Click="menu_Version_Click"/>
+                <MenuItem Header="详细信息" Click="menu_VersionDetail_Click"/>
+            </MenuItem>
+            
         </ContextMenu>
     </Window.Resources>
     <Grid>
@@ -143,7 +145,7 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <Slider Margin="10,10,10,0" Height="18" Name="slider_Progress" Minimum="0" TickFrequency="1" Style="{StaticResource SliderStyle}"  Thumb.DragCompleted="slider_Progress_DragCompleted"></Slider>              
+                <Slider Margin="10,10,10,0" Height="10" Name="slider_Progress" Minimum="0" TickFrequency="1" Style="{StaticResource SliderStyle}"  Thumb.DragCompleted="slider_Progress_DragCompleted"></Slider>              
             </Grid>
 
             <Grid Grid.Row="1" >
