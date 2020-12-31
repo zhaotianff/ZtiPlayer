@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -34,20 +35,26 @@ namespace ZtiPlayer
 
         Storyboard showVideoListAnimation;
         Storyboard hideVideoListAnimation;
+        Storyboard showPlayerControlAnimation;
+        Storyboard hidePlayerControlAnimation;
 
         AxAPlayer3Lib.AxPlayer player;
-        System.Windows.Threading.DispatcherTimer timer;
+        System.Windows.Threading.DispatcherTimer updateElapsedTimer;
+        System.Windows.Threading.DispatcherTimer cursorCheckTimer;
         XmlHelper playlistXmlHelper = new XmlHelper();
         System.Windows.Controls.ContextMenu contextMenu;
 
         private int ElapsedTime { get; set; } = 0;
-        private int CurrentSelectedIndex { get; set; } = -1;       
+        private int MousePointCheckTick { get; set; } = 0;
+        private Point LastMousePoint { get; set; }
+        private int CurrentSelectedIndex { get; set; } = -1;
         private VideoItem CurrentVideoItem { get; set; }
+        private bool PlayerControlAnimationFlag { get; set; } = false;
 
         public MainWindow()
         {
-            InitializeComponent();           
-            Init();        
+            InitializeComponent();
+            Init();
         }
 
         public MainWindow(StartupArgs args)
@@ -67,6 +74,9 @@ namespace ZtiPlayer
 
             showVideoListAnimation = (Storyboard)this.TryFindResource("ShowVideoListAnimation");
             hideVideoListAnimation = (Storyboard)this.TryFindResource("HideVideoListAnimation");
+            showPlayerControlAnimation = (Storyboard)this.TryFindResource("ShowPlayerControlAnimation");
+            hidePlayerControlAnimation = (Storyboard)this.TryFindResource("HidePlayerControlAnimation");
+            hidePlayerControlAnimation.Completed += async (a, b) => { await Task.Delay(500); SetPlayerControlAnimationFlag(false); };
             SetBackground("");
             LoadPlayList();          
             HideFormHost();
@@ -129,10 +139,20 @@ namespace ZtiPlayer
         #region Function
         private void InitTimer()
         {
-            timer = new System.Windows.Threading.DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += (a, b) => { UpdateElapsedTime(); };
+            updateElapsedTimer = new System.Windows.Threading.DispatcherTimer();
+            updateElapsedTimer.Interval = TimeSpan.FromSeconds(1);
+            updateElapsedTimer.Tick += (a, b) => { UpdateElapsedTime(); };
+
+            cursorCheckTimer = new System.Windows.Threading.DispatcherTimer();
+            cursorCheckTimer.Interval = TimeSpan.FromSeconds(1);
+            cursorCheckTimer.Tick += (a, b) => { CheckCursorPoint(); };
         }
+
+        private async void SetPlayerControlAnimationFlag(bool value)
+        {
+            PlayerControlAnimationFlag = value;
+        }
+
         private void InitializeVideoPlayer()
         {
             player = new AxAPlayer3Lib.AxPlayer();
@@ -235,11 +255,15 @@ namespace ZtiPlayer
             switch (nMessage)
             {
                 case Win32Message.WM_LBUTTONDBLCLK:
+                    //TODO 使用单击判断 增加播放暂停 
                     FullScreenOrRestore();
                     break;
                 case Win32Message.WM_RBUTTONDOWN:
                     //TODO ContextMenu
                     ShowContextMenu();
+                    break;
+                case Win32Message.WM_MOUSEMOVE:
+                    ShowFullscreenPlayerControl();
                     break;
                 default:
                     break;
@@ -358,7 +382,7 @@ namespace ZtiPlayer
 
             this.slider_Progress.Value = 0;
             this.slider_Progress.Maximum = durationMillionSeconds / 1000;
-            timer.IsEnabled = true;
+            updateElapsedTimer.IsEnabled = true;
 
             this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
 
@@ -410,10 +434,35 @@ namespace ZtiPlayer
             });
         }
 
+        private void CheckCursorPoint()
+        {
+            MousePointCheckTick++;
+
+            if (MousePointCheckTick == 1)
+            {
+                LastMousePoint = Mouse.GetPosition(this);
+                return;
+            }
+
+            var currentPoint = Mouse.GetPosition(this);
+
+            if(LastMousePoint != currentPoint)
+            {
+                MousePointCheckTick = 0;
+                ShowFullscreenPlayerControl();
+                return;
+            }
+
+            if(MousePointCheckTick == 3)
+            {
+                HideFullscreenPlayerControl();
+            }
+        }
+
         private void UpdatePlayList()
         {
             var list = list_Video.ItemsSource as List<VideoItem>;
-            var existVideoItem = list.Where(x => x.Name == CurrentVideoItem.Name && x.Path == CurrentVideoItem.Path).FirstOrDefault();
+            var existVideoItem = list?.Where(x => x.Name == CurrentVideoItem.Name && x.Path == CurrentVideoItem.Path).FirstOrDefault();
 
             if (existVideoItem == null)
             {
@@ -445,7 +494,7 @@ namespace ZtiPlayer
 
             if(value == 0)
             {
-                timer.IsEnabled = false;
+                updateElapsedTimer.IsEnabled = false;
                 this.lbl_Elapsed.Content = "00:00:00";
             }
         }
@@ -602,15 +651,31 @@ namespace ZtiPlayer
 
         private void FullScreen()
         {
-            this.grid_Function.Height = 0;
+            hidePlayerControlAnimation?.Begin();
+            this.WindowStyle = WindowStyle.None;
             this.WindowState = System.Windows.WindowState.Maximized;
+            StartCursorCheck();
         }
 
         private void Restore()
         {
-            this.grid_Function.Height = 110;
+            showPlayerControlAnimation?.Begin();
+            this.WindowStyle = WindowStyle.SingleBorderWindow;
             this.WindowState = System.Windows.WindowState.Normal;
+            StopCursorCheck();
         }
+
+        private void StartCursorCheck()
+        {
+            MousePointCheckTick = 0;
+            cursorCheckTimer.IsEnabled = true;
+        }
+
+        private void StopCursorCheck()
+        {
+            cursorCheckTimer.IsEnabled = false;
+        }
+
         private void PlayOrPause()
         {
             if (player.GetState() == (int)PlayState.PS_PLAY)
@@ -623,6 +688,22 @@ namespace ZtiPlayer
                 player.Play();
                 this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
             }
+        }
+
+        private void ShowFullscreenPlayerControl()
+        {
+            if (this.WindowStyle == WindowStyle.None && this.WindowState == WindowState.Maximized && grid_Function.Height == 0 && PlayerControlAnimationFlag == false)
+            {
+                StartCursorCheck();
+                showPlayerControlAnimation?.Begin();
+            }           
+        }
+
+        private void HideFullscreenPlayerControl()
+        {
+            StopCursorCheck();
+            SetPlayerControlAnimationFlag(true);
+            hidePlayerControlAnimation?.Begin();
         }
         int MyHookProc(int code, IntPtr wParam, IntPtr lParam)
         {
@@ -864,7 +945,7 @@ namespace ZtiPlayer
         private void menu_ShowOrHidePlaylist_Click(object sender, RoutedEventArgs e)
         {
             ShowOrHideVideoList();
-        }
+        }       
         #endregion
 
     }

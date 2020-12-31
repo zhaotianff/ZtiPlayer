@@ -15,6 +15,14 @@
             <DoubleAnimation Storyboard.TargetName="grid_List" Storyboard.TargetProperty="Width" To="0" Duration="0:0:0.5"/>
         </Storyboard>
 
+        <Storyboard x:Key="ShowPlayerControlAnimation">
+            <DoubleAnimation Storyboard.TargetName="grid_Function" Storyboard.TargetProperty="Height" To="110" Duration="0:0:0.5"/>
+        </Storyboard>
+
+        <Storyboard x:Key="HidePlayerControlAnimation">
+            <DoubleAnimation Storyboard.TargetName="grid_Function" Storyboard.TargetProperty="Height" To="0" Duration="0:0:0.5"/>
+        </Storyboard>
+
         <ContextMenu x:Key="contextMenu" Style="{StaticResource ContextMenuStyle}" ItemContainerStyle="{StaticResource StyleMenuItem}">
             <MenuItem Header="全屏/恢复" Name="menu_Fullscreen" Click="menu_Fullscreen_Click"/>
             <MenuItem Header="打开" ItemContainerStyle="{StaticResource StyleMenuItem}">
