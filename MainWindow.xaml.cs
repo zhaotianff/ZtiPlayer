@@ -148,7 +148,7 @@ namespace ZtiPlayer
             cursorCheckTimer.Tick += (a, b) => { CheckCursorPoint(); };
         }
 
-        private async void SetPlayerControlAnimationFlag(bool value)
+        private void SetPlayerControlAnimationFlag(bool value)
         {
             PlayerControlAnimationFlag = value;
         }
@@ -197,6 +197,17 @@ namespace ZtiPlayer
             }
         }
 
+        private void DealWithAplayerKeyDown(int lParam,int wParam)
+        {
+            //这里不通过键码了，直接判断键名
+            StringBuilder sb = new StringBuilder(32);
+            WinAPI.GetKeyNameText(lParam, sb, 32);
+
+            if(sb.ToString() == "Space")
+            {
+                PlayOrPause();
+            }
+        }
         private void ShowContextMenu()
         {
             if(contextMenu != null)
@@ -204,33 +215,6 @@ namespace ZtiPlayer
                 //ContextMenu Rule
                 this.formhost.ContextMenu.IsOpen = true;
             }
-        }
-
-        private void LoadDemoData()
-        {
-            List<VideoItem> listDemoVideo = new List<VideoItem>()
-            {
-                new VideoItem()
-                {
-                    Duration = new TimeSpan(0,0,1),
-                    Name = "Demo1",
-                    Path = "http://www.demo.com/1.mp4"
-                },
-                new VideoItem()
-                {
-                    Duration = new TimeSpan(0,0,1),
-                    Name = "Demo2",
-                    Path = "http://www.demo.com/2.mp4"
-                },
-                new VideoItem()
-                {
-                    Duration = new TimeSpan(0,0,1),
-                    Name = "Demo3",
-                    Path = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
-                }
-            };
-
-            this.list_Video.ItemsSource = listDemoVideo;
         }
 
         private void LoadPlayList()
@@ -254,8 +238,13 @@ namespace ZtiPlayer
         {
             switch (nMessage)
             {
+                case Win32Message.WM_KEYDOWN:
+                    DealWithAplayerKeyDown(lParam, wParam);
+                    break;
+                case Win32Message.WM_LBUTTONDOWN:
+                    PlayOrPause();
+                    break;
                 case Win32Message.WM_LBUTTONDBLCLK:
-                    //TODO 使用单击判断 增加播放暂停 
                     FullScreenOrRestore();
                     break;
                 case Win32Message.WM_RBUTTONDOWN:
@@ -730,6 +719,18 @@ namespace ZtiPlayer
 
             return 0;
         }
+
+        private void OpenFileLocation(string path)
+        {
+            //explorer /select, "C:\Users\Dream\Pictures\xx.mp4"
+            if(System.IO.File.Exists(path) == false)
+            {
+                MessageBox.Show("文件不存在");
+                return;
+            }
+
+            System.Diagnostics.Process.Start("explorer","/select, " + path);
+        }
         #endregion
 
         #region Event
@@ -742,9 +743,14 @@ namespace ZtiPlayer
         {
             if (e.Key == Key.Escape)
             {
-                Restore();              
+                Restore();
+                showVideoListAnimation?.Begin();
             }
 
+            if(e.Key == Key.Space)
+            {
+                PlayOrPause();
+            }
         }
 
         private void list_Video_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -853,7 +859,15 @@ namespace ZtiPlayer
 
         private void menu_Property_Click(object sender, RoutedEventArgs e)
         {
-            WinAPI.ShowFileProperties(CurrentVideoItem.Path);
+            if (list_Video.SelectedIndex == -1)
+                return;
+
+            var videoItem = list_Video.SelectedItem as VideoItem;
+
+            if (videoItem != null)
+            {
+                WinAPI.ShowFileProperties(videoItem.Path);
+            }          
         }
 
         private void menu_Next_Click(object sender, RoutedEventArgs e)
@@ -888,20 +902,45 @@ namespace ZtiPlayer
             FullScreenOrRestore();
         }
 
-
         private void menu_OpenFileLocation_Click(object sender, RoutedEventArgs e)
         {
+            if (list_Video.SelectedIndex == -1)
+                return;
 
+            var videoItem = list_Video.SelectedItem as VideoItem;
+
+            if(videoItem != null)
+            {
+                OpenFileLocation(videoItem.Path);
+            }
         }
 
         private void menu_DeleteChoose_Click(object sender, RoutedEventArgs e)
         {
+            var index = list_Video.SelectedIndex;
 
+            if (index == -1)
+                return;
+
+            var list = list_Video.ItemsSource as List<VideoItem>;
+
+            if(list.Count > 0)
+            {
+                RemovePlaylistRecord(index);
+                list.RemoveAt(index);
+                list_Video.ItemsSource = null;
+                list_Video.ItemsSource = list;
+            }
+        }
+
+        private void RemovePlaylistRecord(int index)
+        {
+            playlistXmlHelper.RemoveFromPlayList(index);
         }
 
         private void menu_PlayChoose_Click(object sender, RoutedEventArgs e)
         {
-
+            list_Video_MouseDoubleClick(null, null);
         }
 
         private void menu_Version_Click(object sender, RoutedEventArgs e)

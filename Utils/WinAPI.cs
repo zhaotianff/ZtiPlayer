@@ -65,6 +65,10 @@ namespace ZtiPlayer.Utils
             ShellExecuteEx(ref info);
         }
 
-        
+        [DllImport("User32.dll")]
+        public static extern int ShowCursor(bool bShow);
+
+        [DllImport("User32.dll")]
+        public static extern int GetKeyNameText(int lParam,StringBuilder lpString,int cchSize);
     }
 }

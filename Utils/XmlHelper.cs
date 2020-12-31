@@ -102,6 +102,19 @@ namespace ZtiPlayer.Utils
             }
         }
 
+        public void RemoveFromPlayList(int index)
+        {
+            try
+            {
+                doc.Root.Elements().ElementAt(index).Remove();
+                doc.Save(filePath);
+            }
+            catch(Exception ex)
+            {
+                //TODO
+            }
+        }
+
         public List<VideoItem> AddToPlayList(VideoItem videoItem)
         {
             List<VideoItem> list = LoadPlayList();
