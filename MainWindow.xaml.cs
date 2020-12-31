@@ -473,8 +473,11 @@ namespace ZtiPlayer
         }
 
         private void HandleStateChange(int oldState,int newState)
-        {
-            //TODO
+        {         
+            if(oldState == (int)PlayState.PS_PLAY && newState == (int)PlayState.PS_CLOSING)
+            {
+                StopPlay();
+            }
         }
 
         private void SetProgress(int value)
