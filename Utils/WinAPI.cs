@@ -50,10 +50,6 @@ namespace ZtiPlayer.Utils
         [DllImport("shell32.dll")]
         static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);
 
-        /// <summary>
-        /// 显示文件属性对话框
-        /// </summary>
-        /// <param name="Filename"></param>
         public static void ShowFileProperties(string Filename)
         {
             SHELLEXECUTEINFO info = new SHELLEXECUTEINFO();

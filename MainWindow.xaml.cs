@@ -697,31 +697,6 @@ namespace ZtiPlayer
             SetPlayerControlAnimationFlag(true);
             hidePlayerControlAnimation?.Begin();
         }
-        int MyHookProc(int code, IntPtr wParam, IntPtr lParam)
-        {
-            //LPKBDLLHOOKSTRUCT hookStruct = (LPKBDLLHOOKSTRUCT)lParam;
-            //if (code == HC_ACTION)
-            //{
-            //    switch (wParam)
-            //    {
-            //        case WM_KEYDOWN:
-            //        case WM_SYSKEYDOWN:
-            //        case WM_KEYUP:
-            //        case WM_SYSKEYUP:
-            //            if (hookStruct->vkCode == VK_LWIN || hookStruct->vkCode == VK_RWIN ||
-            //                  (hookStruct->vkCode == VK_ESCAPE) && ((GetKeyState(VK_CONTROL) & 0x8000) != 0))
-            //            {
-            //                return 1;
-            //            }
-            //            break;
-            //        default:
-            //            break;
-            //    }
-            //}
-            //return LRESULT();
-
-            return 0;
-        }
 
         private void OpenFileLocation(string path)
         {
