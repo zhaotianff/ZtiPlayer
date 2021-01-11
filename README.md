@@ -1,5 +1,25 @@
 # ZtiPlayer
 
+<p align="center">
+<a href="https://github.com/zhaotianff/ZtiPlayer" target="_blank">
+<img align="center" alt="ZtiPlayer" src="Icon/logo.png" />
+</a>
+</p>
+<p align="center">
+<a href="https://github.com/zhaotianff/ZtiPlayer/stargazers" target="_blank">
+ <img alt="stars" src="https://img.shields.io/github/stars/zhaotianff/ZtiPlayer.svg" />
+</a>
+<a href="https://github.com/zhaotianff/ZtiPlayer/releases" target="_blank">
+ <img alt="releases" src="https://img.shields.io/github/downloads/zhaotianff/ZtiPlayer/total.svg" />
+</a>
+<a href="https://github.com/zhaotianff/ZtiPlayer/network/members" target="_blank">
+ <img alt="forks" src="https://img.shields.io/github/forks/zhaotianff/ZtiPlayer.svg" />
+</a>
+<a href="https://github.com/zhaotianff/ZtiPlayer/issues" target="_blank">
+ <img alt="issues" src="https://img.shields.io/github/issues/zhaotianff/ZtiPlayer.svg" />
+</a>
+</p>
+
 Powered by aplyer engine(http://aplayer.open.xunlei.com)
 
 If you want to use for business,you must get the authorization(**free**)
