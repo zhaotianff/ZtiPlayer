@@ -16,7 +16,7 @@ $FullPath = "$TempPath\$CodecsFileName"
 $CodecsExtractName = "codecs"
 $CodecsExtractPath = "$TempPath\$CodecsExtractName"
 
-$thumderPath = [System.Environment]::GetFolderPath('CommonDesktopDirectory').Replace("\Desktop","") + ""
+$thumderPath = [System.Environment]::GetFolderPath('CommonDesktopDirectory').Replace("Desktop","Thunder Network") + "\APlayer\codecs"
 
 $testIP = [System.Net.Dns]::GetHostEntry("aplayer.open.xunlei.com").AddressList[0].ToString();
 $pingResult = Test-NetConnection $testIP
@@ -55,9 +55,9 @@ if($pingResult.PingSucceeded -eq $true)
         md $thumderPath
     }
 
-    copy -Path $CodecsExtractPath -Destination $thumderPath -Recurse
+    copy -Path ($CodecsExtractPath + "\*") -Destination $thumderPath -Recurse
 
-    "Press any key to exit"
+    "Register success,press any key to exit"
     Read-Host
 }
 else
