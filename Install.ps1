@@ -55,7 +55,7 @@ if($pingResult.PingSucceeded -eq $true)
         md $thumderPath
     }
 
-    copy -Path ($CodecsExtractPath + "\*") -Destination $thumderPath -Recurse
+    copy -Path ($CodecsExtractPath + "\*") -Destination $thumderPath -Recurse -Force
 
     "Register success,press any key to exit"
     Read-Host
