@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon\logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AxInterop.APlayer3Lib">
       <HintPath>..\..\..\GetImage\ZtiPlayer\bin\Debug\AxInterop.APlayer3Lib.dll</HintPath>
@@ -200,6 +203,9 @@
   <ItemGroup>
     <Resource Include="Icon\cloud.png" />
     <Resource Include="Icon\video.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon\logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
