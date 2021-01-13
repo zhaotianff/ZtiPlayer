@@ -65,6 +65,13 @@ namespace ZtiPlayer
         {
             this.DialogResult = false;
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.combox_Url.Focus();
+        }
         #endregion
+
+
     }
 }

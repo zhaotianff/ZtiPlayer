@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZtiPlayer"
         mc:Ignorable="d"
-        Title="打开Url" Height="190" Width="500" WindowStartupLocation="CenterScreen" Style="{StaticResource newStyle}" ResizeMode="NoResize" FontFamily="{StaticResource muyao}">
+        Title="打开Url" Height="190" Width="500" WindowStartupLocation="CenterScreen" Style="{StaticResource newStyle}" ResizeMode="NoResize" FontFamily="{StaticResource muyao}" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

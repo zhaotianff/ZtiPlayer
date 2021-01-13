@@ -320,7 +320,7 @@ namespace ZtiPlayer
 
         private void Open(VideoItem item)
         {
-            if(System.IO.File.Exists(item.Path) == false )
+            if(item.Type == 0 && System.IO.File.Exists(item.Path) == false )
             {
                 MessageBox.Show("文件不存在");
                 return;
