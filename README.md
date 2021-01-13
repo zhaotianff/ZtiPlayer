@@ -35,7 +35,7 @@ Run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and r
   * image format(jpg,png,bmp...)
   
   * sound format(wav,mp3,flac,ape,ogg...)
-* Play network file,supported protocols
+* Play network file
   * Http/Https/Ftp/Mms/Rtsp/Rtmp/Hls
 * Screenshot
 
