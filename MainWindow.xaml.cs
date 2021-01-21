@@ -244,9 +244,9 @@ namespace ZtiPlayer
                 case Win32Message.WM_LBUTTONDOWN:
                     PlayOrPause();
                     break;
-                case Win32Message.WM_LBUTTONDBLCLK:
-                    FullScreenOrRestore();
-                    break;
+                //case Win32Message.WM_LBUTTONDBLCLK:
+                //    FullScreenOrRestore();
+                //    break;
                 case Win32Message.WM_RBUTTONDOWN:
                     //TODO ContextMenu
                     ShowContextMenu();

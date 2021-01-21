@@ -77,6 +77,11 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
+
+            <Grid>
+                <Image HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="15" Height="15"/>
+            </Grid>
+            
             <WindowsFormsHost  x:Name="formhost">
                 <winform:Panel x:Name="panel">
                     
