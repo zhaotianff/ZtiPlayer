@@ -241,12 +241,12 @@ namespace ZtiPlayer
                 case Win32Message.WM_KEYDOWN:
                     DealWithAplayerKeyDown(lParam, wParam);
                     break;
-                case Win32Message.WM_LBUTTONDOWN:
-                    PlayOrPause();
-                    break;
-                //case Win32Message.WM_LBUTTONDBLCLK:
-                //    FullScreenOrRestore();
+                //case Win32Message.WM_LBUTTONDOWN:
+                //    PlayOrPause();
                 //    break;
+                case Win32Message.WM_LBUTTONDBLCLK:
+                    FullScreenOrRestore();
+                    break;
                 case Win32Message.WM_RBUTTONDOWN:
                     //TODO ContextMenu
                     ShowContextMenu();
@@ -962,8 +962,12 @@ namespace ZtiPlayer
         private void menu_ShowOrHidePlaylist_Click(object sender, RoutedEventArgs e)
         {
             ShowOrHideVideoList();
-        }       
-        #endregion
+        }
 
+        private void btn_Fullscreen_Click(object sender, RoutedEventArgs e)
+        {
+            FullScreenOrRestore();
+        }
+        #endregion
     }
 }
