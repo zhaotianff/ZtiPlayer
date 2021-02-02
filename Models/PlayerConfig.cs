@@ -21,7 +21,22 @@ namespace ZtiPlayer.Models
         /// <summary>
         /// play speed，100-normal，>100 fast，<100 slow
         /// </summary>
-        PlaySpeed = 104,     
+        PlaySpeed = 104,
+
+        /// <summary>
+        /// Aspect ratio(4:3)
+        /// </summary>
+        AspectRatioCustom = 204,
+
+        /// <summary>
+        /// Video black border
+        /// </summary>
+        ClipBlackbandEnable = 207,
+
+        /// <summary>
+        /// Picture alpha(0-255)
+        /// </summary>
+        PictureAlpha = 608,
 
 
         /// <summary>
