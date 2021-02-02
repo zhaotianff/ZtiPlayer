@@ -89,6 +89,7 @@ namespace ZtiPlayer
             CommandBindings.Add(new CommandBinding(SystemCommands.MaximizeWindowCommand, MaximizeWindow, CanResizeWindow));
             CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand, MinimizeWindow, CanMinimizeWindow));
             CommandBindings.Add(new CommandBinding(SystemCommands.RestoreWindowCommand, RestoreWindow, CanResizeWindow));
+            CommandBindings.Add(new CommandBinding(SystemCommands.ShowSystemMenuCommand, ShowSystemMenu));
         }
 
         private void CanResizeWindow(object sender, CanExecuteRoutedEventArgs e)
@@ -119,6 +120,18 @@ namespace ZtiPlayer
         private void RestoreWindow(object sender, ExecutedRoutedEventArgs e)
         {
             SystemCommands.RestoreWindow(this);
+        }
+
+        private void ShowSystemMenu(object sender, ExecutedRoutedEventArgs e)
+        {
+            var element = e.OriginalSource as FrameworkElement;
+            if (element == null)
+                return;
+
+            var point = WindowState == WindowState.Maximized ? new Point(0, element.ActualHeight)
+                : new Point(Left + BorderThickness.Left, element.ActualHeight + Top + BorderThickness.Top);
+            point = element.TransformToAncestor(this).Transform(point);
+            SystemCommands.ShowSystemMenu(this, point);
         }
 
         public void SetBackground(string filePath)
@@ -206,6 +219,11 @@ namespace ZtiPlayer
             if(sb.ToString() == "Space")
             {
                 PlayOrPause();
+            }
+
+            if(sb.ToString() == "Enter")
+            {
+                FullScreenOrRestore();
             }
         }
         private void ShowContextMenu()
@@ -728,6 +746,11 @@ namespace ZtiPlayer
             if(e.Key == Key.Space)
             {
                 PlayOrPause();
+            }
+
+            if(e.Key == Key.Enter)
+            {
+                FullScreenOrRestore();
             }
         }
 
