@@ -76,6 +76,7 @@ namespace ZtiPlayer.Utils
                     double.TryParse(item.Element("Duration").Value,out millionSeconds);
                     int.TryParse(item.Element("Type").Value,out type);
                     videoItem.Duration = TimeSpan.FromMilliseconds(millionSeconds);
+                    videoItem.DurationStr = item.Element("DurationStr").Value;
                     videoItem.Name = item.Element("Name").Value;
                     videoItem.Path = item.Element("Path").Value;
                     videoItem.Type = type;
@@ -124,7 +125,8 @@ namespace ZtiPlayer.Utils
                 new XElement("Name", videoItem.Name),
                 new XElement("Path",videoItem.Path),
                 new XElement("Type",videoItem.Type),
-                new XElement("Duration", videoItem.Duration.Milliseconds)));
+                new XElement("Duration", videoItem.Duration.Milliseconds),
+                new XElement("DurationStr",videoItem.DurationStr)));
             doc.Save(filePath);
             list.Add(videoItem);
             return list;

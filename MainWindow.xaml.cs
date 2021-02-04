@@ -405,7 +405,7 @@ namespace ZtiPlayer
         {
             this.lbl_Elapsed.Content = "00:00:00";
             int durationMillionSeconds = player.GetDuration();
-            this.lbl_Duration.Content = GetTimeString(durationMillionSeconds);
+            this.lbl_Duration.Content = PlayerHelper.GetTimeString(durationMillionSeconds);
 
             this.slider_Progress.Value = 0;
             this.slider_Progress.Maximum = durationMillionSeconds / 1000;
@@ -426,21 +426,11 @@ namespace ZtiPlayer
             CurrentSelectedIndex = -1;
         }
 
-        private string GetTimeString(int millionSeconds)
-        {
-            int seconds = 0, minutes = 0, hours = 0;
-            TimeSpan ts = TimeSpan.FromMilliseconds(millionSeconds);
-            seconds = ts.Seconds;
-            minutes = ts.Minutes;
-            hours = ts.Hours;
-            return hours.ToString("00") + ":" +  minutes.ToString("00") +   ":" + seconds.ToString("00");
-        }
-
         private void UpdateElapsedTime()
         {         
             this.Dispatcher.Invoke(()=> {
                 ElapsedTime = this.player.GetPosition();
-                this.lbl_Elapsed.Content = GetTimeString(ElapsedTime);              
+                this.lbl_Elapsed.Content = PlayerHelper.GetTimeString(ElapsedTime);              
                 this.slider_Progress.Value = ElapsedTime/1000;
             });
         }
@@ -481,8 +471,9 @@ namespace ZtiPlayer
                 videoItem.Path = CurrentVideoItem.Path;
                 videoItem.Type = CurrentVideoItem.Type;
                 videoItem.Duration = TimeSpan.FromMilliseconds(player.GetDuration());
-                var tempPlaylist = playlistXmlHelper.AddToPlayList(videoItem);
-                playList = new ObservableCollection<VideoItem>(tempPlaylist);
+                videoItem.DurationStr = PlayerHelper.GetTimeString(videoItem.Duration.TotalMilliseconds);
+                playlistXmlHelper.AddToPlayList(videoItem);
+                playList.Add(videoItem);
                 CurrentSelectedIndex = playList.Count - 1;
                 list_Video.SelectedIndex = CurrentSelectedIndex;
             }
@@ -790,7 +781,7 @@ namespace ZtiPlayer
         {
             int time = (int)this.slider_Progress.Value * 1000;
             this.player.SetPosition(time);
-            this.lbl_Elapsed.Content = GetTimeString(time);
+            this.lbl_Elapsed.Content = PlayerHelper.GetTimeString(time);
         }
 
         private void btn_Stop_Click(object sender, RoutedEventArgs e)

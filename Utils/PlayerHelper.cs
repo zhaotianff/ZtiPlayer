@@ -51,5 +51,15 @@ namespace ZtiPlayer.Utils
         {
             return VideoExtensions.Keys.Contains(extension);
         }
+
+        public static string GetTimeString(double millionSeconds)
+        {
+            int seconds = 0, minutes = 0, hours = 0;
+            TimeSpan ts = TimeSpan.FromMilliseconds(millionSeconds);
+            seconds = ts.Seconds;
+            minutes = ts.Minutes;
+            hours = ts.Hours;
+            return hours.ToString("00") + ":" + minutes.ToString("00") + ":" + seconds.ToString("00");
+        }
     }
 }

@@ -17,6 +17,11 @@ namespace ZtiPlayer.Models
         /// </summary>
         public int Type { get; set; }
 
+        /// <summary>
+        /// format display 
+        /// </summary>
         public TimeSpan Duration { get; set; }
+
+        public string DurationStr { get; set; }
     }
 }

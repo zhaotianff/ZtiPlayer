@@ -116,29 +116,39 @@
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
 
-                        <ListBox Width="300" Background="Transparent" BorderBrush="Transparent" Name="list_Video" MouseDoubleClick="list_Video_MouseDoubleClick" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ContextMenuOpening="ContextMenu_ContextMenuOpening">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel>
-                                        <WrapPanel>
-                                            <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" FontSize="12"/>
-                                            <Label Height="25" VerticalAlignment="Center" Content="{Binding Duration}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}"  />
-                                        </WrapPanel>
-                                        <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Path}" FontSize="10" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" FontFamily="{StaticResource default}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
 
-                            <ListBox.ContextMenu>
-                                <ContextMenu ItemContainerStyle="{StaticResource StyleMenuItem}" Style="{StaticResource ContextMenuStyle}" Name="contextmenu_VideoList" >
-                                    <MenuItem Header="播放选中文件" Name="menu_PlayChoose" Click="menu_PlayChoose_Click"/>
-                                    <MenuItem Header="删除选中文件" Name="menu_DeleteChoose" Click="menu_DeleteChoose_Click"/>
-                                    <MenuItem Header="打开文件位置" Name="menu_OpenFileLocation" Click="menu_OpenFileLocation_Click"/>
-                                    <MenuItem Header="文件属性" Click="menu_Property_Click"/>
-                                    <MenuItem Header="清空列表" Click="menu_ClearPlayList_Click"/>
-                                </ContextMenu>
-                            </ListBox.ContextMenu>
-                        </ListBox>
+                            <Label Content="播放列表" VerticalAlignment="Center" FontFamily="微软雅黑" FontSize="13"/>
+                            <Separator VerticalAlignment="Bottom"/>
+
+                            <ListBox Grid.Row="1" Width="300" Background="Transparent" BorderBrush="Transparent" Name="list_Video" MouseDoubleClick="list_Video_MouseDoubleClick" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ContextMenuOpening="ContextMenu_ContextMenuOpening">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <WrapPanel>
+                                                <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Name}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" FontSize="12" ToolTip="{Binding Name}"/>
+                                                <Label Height="25" VerticalAlignment="Center" Content="{Binding DurationStr}" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" ToolTip="{Binding DurationStr}" />
+                                            </WrapPanel>
+                                            <Label Height="25" VerticalContentAlignment="Center" Content="{Binding Path}" FontSize="10" Foreground="{Binding  RelativeSource ={ RelativeSource Self},  Path=Foreground}" FontFamily="{StaticResource default}" ToolTip="{Binding Path}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+
+                                <ListBox.ContextMenu>
+                                    <ContextMenu ItemContainerStyle="{StaticResource StyleMenuItem}" Style="{StaticResource ContextMenuStyle}" Name="contextmenu_VideoList" >
+                                        <MenuItem Header="播放选中文件" Name="menu_PlayChoose" Click="menu_PlayChoose_Click"/>
+                                        <MenuItem Header="删除选中文件" Name="menu_DeleteChoose" Click="menu_DeleteChoose_Click"/>
+                                        <MenuItem Header="打开文件位置" Name="menu_OpenFileLocation" Click="menu_OpenFileLocation_Click"/>
+                                        <MenuItem Header="文件属性" Click="menu_Property_Click"/>
+                                        <MenuItem Header="清空列表" Click="menu_ClearPlayList_Click"/>
+                                    </ContextMenu>
+                                </ListBox.ContextMenu>
+                            </ListBox>
+                        </Grid>
 
                         <WrapPanel Grid.Row="1">
                             <local:ImageButton Width="25" Height="25" HorizontalAlignment="Right" Image="../Icon/open.png" Margin="2" x:Name="btn_Open" Click="btn_Open_Click"/>
