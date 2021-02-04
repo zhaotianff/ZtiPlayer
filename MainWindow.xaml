@@ -28,6 +28,7 @@
             <MenuItem Header="打开" ItemContainerStyle="{StaticResource StyleMenuItem}">
                 <MenuItem Header="打开本地文件"  Click="menu_OpenLocal_Click"/>
                 <MenuItem Header="打开网络URL"  Click="menu_OpenNetwork_Click"/>
+                <MenuItem Header="打开文件夹"  Click="menu_OpenFolder_Click"/>
             </MenuItem>
             <MenuItem Header="关闭" Click="menu_Close_Click" />
             <MenuItem Header="播放列表" ItemContainerStyle="{StaticResource StyleMenuItem}">
@@ -143,8 +144,9 @@
                             <local:ImageButton Width="25" Height="25" HorizontalAlignment="Right" Image="../Icon/open.png" Margin="2" x:Name="btn_Open" Click="btn_Open_Click"/>
                             <Popup Placement="Top" PlacementTarget="{Binding ElementName=btn_Open}" StaysOpen="False" PopupAnimation="Fade" Name="popup_OpenMenu">
                                 <StackPanel Background="White">
-                                    <MenuItem Header="打开本地文件" Name="menu_OpenLocal" Click="menu_OpenLocal_Click"/>
-                                    <MenuItem Header="打开网络文件" Name="menu_OpenNetwork" Click="menu_OpenNetwork_Click"/>
+                                    <MenuItem Header="打开本地文件" Click="menu_OpenLocal_Click"/>
+                                    <MenuItem Header="打开本地文件夹" Click="menu_OpenFolder_Click"/>
+                                    <MenuItem Header="打开网络文件" Click="menu_OpenNetwork_Click"/>
                                 </StackPanel>
                             </Popup>
                         </WrapPanel>

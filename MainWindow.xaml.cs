@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -43,6 +44,7 @@ namespace ZtiPlayer
         System.Windows.Threading.DispatcherTimer cursorCheckTimer;
         XmlHelper playlistXmlHelper = new XmlHelper();
         System.Windows.Controls.ContextMenu contextMenu;
+        ObservableCollection<VideoItem> playList = new ObservableCollection<VideoItem>();
 
         private int ElapsedTime { get; set; } = 0;
         private int MousePointCheckTick { get; set; } = 0;
@@ -148,7 +150,6 @@ namespace ZtiPlayer
         }
         #endregion
 
-
         #region Function
         private void InitTimer()
         {
@@ -237,7 +238,8 @@ namespace ZtiPlayer
 
         private void LoadPlayList()
         {
-            this.list_Video.ItemsSource = playlistXmlHelper.LoadPlayList();
+            playList =  new ObservableCollection<VideoItem>(playlistXmlHelper.LoadPlayList());
+            this.list_Video.ItemsSource = playList;
         }
 
         private void ShowOrHideVideoList()
@@ -311,10 +313,13 @@ namespace ZtiPlayer
 
         private void OpenLocalFile(string path)
         {
+            if (string.IsNullOrEmpty(path))
+                return;
+
             VideoItem item = new VideoItem();
             item.Path = path;
             item.Type = 0;
-            item.Name = GetVideoName(path,item.Type);
+            item.Name = PlayerHelper.GetVideoName(path,item.Type);
             Open(item);
         }
 
@@ -332,7 +337,7 @@ namespace ZtiPlayer
             }
             item.Path = path;
             item.Type = 1;
-            item.Name = GetVideoName(path,item.Type);
+            item.Name = PlayerHelper.GetVideoName(path,item.Type);
             Open(item);
         }
 
@@ -360,6 +365,21 @@ namespace ZtiPlayer
             {
                 HideNavigationButton();
                 OpenNetworkFile(openURLDialog.Url);              
+            }
+        }
+
+        private void ShowOpenFolderDialog()
+        {
+            System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            folderBrowserDialog.RootFolder = Environment.SpecialFolder.Desktop;
+            if(folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                var folder = folderBrowserDialog.SelectedPath;
+                var files = FileHelper.GetAllFiles(folder);
+                playList.Union(files);
+                OpenLocalFile(files.FirstOrDefault());
+
+                //TODO update list
             }
         }
 
@@ -394,12 +414,14 @@ namespace ZtiPlayer
             this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
 
             HideNavigationButton();
+
+            //TODO
             UpdatePlayList();           
         }
 
         private void ClearPlayList()
         {
-            this.list_Video.ItemsSource = null;
+            playList.Clear();
             playlistXmlHelper.ClearPlayList();
             CurrentSelectedIndex = -1;
         }
@@ -412,24 +434,6 @@ namespace ZtiPlayer
             minutes = ts.Minutes;
             hours = ts.Hours;
             return hours.ToString("00") + ":" +  minutes.ToString("00") +   ":" + seconds.ToString("00");
-        }
-
-        private string GetVideoName(string path,int videoType)
-        {
-            path = path.ToLower();
-            if(videoType == 0)
-            {
-                return System.IO.Path.GetFileName(path);
-            }
-            else if(videoType == 1)
-            {
-                path = path.Substring(path.LastIndexOf("/") + 1);
-                return System.Web.HttpUtility.UrlDecode(path);
-            }
-            else
-            {
-                return "";
-            }
         }
 
         private void UpdateElapsedTime()
@@ -468,8 +472,7 @@ namespace ZtiPlayer
 
         private void UpdatePlayList()
         {
-            var list = list_Video.ItemsSource as List<VideoItem>;
-            var existVideoItem = list?.Where(x => x.Name == CurrentVideoItem.Name && x.Path == CurrentVideoItem.Path).FirstOrDefault();
+            var existVideoItem = playList?.Where(x => x.Name == CurrentVideoItem.Name && x.Path == CurrentVideoItem.Path).FirstOrDefault();
 
             if (existVideoItem == null)
             {
@@ -478,14 +481,14 @@ namespace ZtiPlayer
                 videoItem.Path = CurrentVideoItem.Path;
                 videoItem.Type = CurrentVideoItem.Type;
                 videoItem.Duration = TimeSpan.FromMilliseconds(player.GetDuration());
-                var playlist = playlistXmlHelper.AddToPlayList(videoItem);
-                this.list_Video.ItemsSource = playlist;
-                CurrentSelectedIndex = playlist.Count - 1;
+                var tempPlaylist = playlistXmlHelper.AddToPlayList(videoItem);
+                playList = new ObservableCollection<VideoItem>(tempPlaylist);
+                CurrentSelectedIndex = playList.Count - 1;
                 list_Video.SelectedIndex = CurrentSelectedIndex;
             }
             else
             {
-                CurrentSelectedIndex = list.IndexOf(existVideoItem);
+                CurrentSelectedIndex = playList.IndexOf(existVideoItem);
                 list_Video.SelectedIndex = CurrentSelectedIndex;
             }
         }
@@ -553,13 +556,13 @@ namespace ZtiPlayer
             {
                 CurrentSelectedIndex = 0;
                 list_Video.SelectedIndex = 0;
-                item = list_Video.Items[CurrentSelectedIndex] as VideoItem;
+                item = playList[CurrentSelectedIndex];
                 if(item != null)
                     Open(item);
             }
-            else if(CurrentSelectedIndex < list_Video.Items.Count -1)
+            else if(CurrentSelectedIndex < playList.Count -1)
             {
-                item = list_Video.Items[CurrentSelectedIndex + 1] as VideoItem;
+                item = playList[CurrentSelectedIndex + 1];
                 if (item != null)
                     Open(item);
             }
@@ -574,13 +577,13 @@ namespace ZtiPlayer
             {
                 CurrentSelectedIndex = 0;
                 list_Video.SelectedIndex = 0;
-                item = list_Video.Items[CurrentSelectedIndex] as VideoItem;
+                item = playList[CurrentSelectedIndex];
                 if (item != null)
                     Open(item);
             }
             else if (CurrentSelectedIndex > 0)
             {
-                item = list_Video.Items[CurrentSelectedIndex - 1] as VideoItem;
+                item = playList[CurrentSelectedIndex - 1];
                 if (item != null)
                     Open(item);
             }
@@ -833,6 +836,11 @@ namespace ZtiPlayer
             ShowOpenUrlDialog();
         }
 
+        private void menu_OpenFolder_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOpenFolderDialog();
+        }
+
         private void menu_Screenshot_Click(object sender, RoutedEventArgs e)
         {
             ScreenShot();
@@ -928,9 +936,7 @@ namespace ZtiPlayer
             if(list.Count > 0)
             {
                 RemovePlaylistRecord(index);
-                list.RemoveAt(index);
-                list_Video.ItemsSource = null;
-                list_Video.ItemsSource = list;
+                playList.RemoveAt(index);
             }
         }
 

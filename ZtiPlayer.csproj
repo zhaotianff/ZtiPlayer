@@ -73,6 +73,8 @@
     <Compile Include="OpenURLDialog.xaml.cs">
       <DependentUpon>OpenURLDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\CollectionExtension.cs" />
+    <Compile Include="Utils\FileHelper.cs" />
     <Compile Include="Utils\GlobalData.cs" />
     <Compile Include="Utils\LanguageManager.cs" />
     <Compile Include="Utils\PlayerHelper.cs" />
