@@ -37,6 +37,7 @@ Run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and r
   * sound format(wav,mp3,flac,ape,ogg...)
 * Play network file
   * Http/Https/Ftp/Mms/Rtsp/Rtmp/Hls
+  * Support m3u8
 * Screenshot
 
 ## ScreenShot
