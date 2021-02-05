@@ -131,5 +131,48 @@ namespace ZtiPlayer.Utils
             list.Add(videoItem);
             return list;
         }
+
+        public bool UpdatePlayList(VideoItem videoItem,int index)
+        {
+            if (videoItem == null)
+                return false;
+
+            var ele = doc.Root.Elements().ElementAt(index);
+
+            if(ele != null && ele.Element("Path").Value == videoItem.Path)
+            {
+                ele.Element("Duration").Value = videoItem.Duration.ToString();
+                ele.Element("DurationStr").Value = videoItem.DurationStr;
+            }
+
+            doc.Save(filePath);
+            return true;
+        }
+
+        /// <summary>
+        /// update playlist every time
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public bool UpdatePlayList(IEnumerable<VideoItem> list)
+        {
+            if (doc == null)
+                return false;
+
+            doc.Root.Remove();
+            doc.Add(new XElement("PlayList"));
+
+            foreach (var videoItem in list)
+            {
+                doc.Root.Add(new XElement("Item",
+                new XElement("Name", videoItem.Name),
+                new XElement("Path", videoItem.Path),
+                new XElement("Type", videoItem.Type),
+                new XElement("Duration", videoItem.Duration.Milliseconds),
+                new XElement("DurationStr", videoItem.DurationStr)));
+            }
+            doc.Save(filePath);
+            return true;
+        }
     }
 }

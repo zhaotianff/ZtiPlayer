@@ -380,6 +380,7 @@ namespace ZtiPlayer
                 OpenLocalFile(files.FirstOrDefault());
 
                 //TODO update list
+                playlistXmlHelper.UpdatePlayList(playList);
             }
         }
 
@@ -480,7 +481,10 @@ namespace ZtiPlayer
             else
             {
                 CurrentSelectedIndex = playList.IndexOf(existVideoItem);
+                playList[CurrentSelectedIndex].Duration = TimeSpan.FromMilliseconds(player.GetDuration());
+                playList[CurrentSelectedIndex].DurationStr = PlayerHelper.GetTimeString(existVideoItem.Duration.TotalMilliseconds);
                 list_Video.SelectedIndex = CurrentSelectedIndex;
+                playlistXmlHelper.UpdatePlayList(playList[CurrentSelectedIndex], CurrentSelectedIndex);
             }
         }
 

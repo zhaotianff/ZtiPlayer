@@ -1,27 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ZtiPlayer.Models
 {
-    public class VideoItem
+    public class VideoItem : INotifyPropertyChanged
     {
-        public string Name { get; set; }
+        private string name;
+        private string path;
+        private int type;
+        private TimeSpan duration;
+        private string durationStr;
 
-        public string Path { get; set; }
+        public string Name { get => name; set { name = value; RaiseChange("Name"); } }
+        public string Path { get => path; set { path = value; RaiseChange("Path"); } }
+        public int Type { get => type; set { type = value; RaiseChange("Type"); } }
+        public TimeSpan Duration { get => duration; set { duration = value; RaiseChange("Duration"); } }
+        public string DurationStr { get => durationStr; set { durationStr = value; RaiseChange("DurationStr"); } }
 
-        /// <summary>
-        /// 0-Local 1-Web 2-Other
-        /// </summary>
-        public int Type { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// format display 
-        /// </summary>
-        public TimeSpan Duration { get; set; }
-
-        public string DurationStr { get; set; }
+        public void RaiseChange(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
