@@ -68,6 +68,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\PlayerConfig.cs" />
+    <Compile Include="Models\PlayerSetting.cs" />
     <Compile Include="Models\PlayState.cs" />
     <Compile Include="Models\StartupArgs.cs" />
     <Compile Include="OpenURLDialog.xaml.cs">

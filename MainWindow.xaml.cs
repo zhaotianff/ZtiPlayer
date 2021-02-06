@@ -40,11 +40,14 @@ namespace ZtiPlayer
         Storyboard hidePlayerControlAnimation;
 
         AxAPlayer3Lib.AxPlayer player;
+        PlayerSetting playerSetting = new PlayerSetting();
         System.Windows.Threading.DispatcherTimer updateElapsedTimer;
         System.Windows.Threading.DispatcherTimer cursorCheckTimer;
         XmlHelper playlistXmlHelper = new XmlHelper();
         System.Windows.Controls.ContextMenu contextMenu;
         ObservableCollection<VideoItem> playList = new ObservableCollection<VideoItem>();
+
+        bool isActiveStop = false;
 
         private int ElapsedTime { get; set; } = 0;
         private int MousePointCheckTick { get; set; } = 0;
@@ -493,7 +496,52 @@ namespace ZtiPlayer
             if(oldState == (int)PlayState.PS_PLAY && newState == (int)PlayState.PS_CLOSING)
             {
                 StopPlay();
+
+                if (isActiveStop == false)
+                {
+                    RepeatPlay(playerSetting.RepeatMode);
+                }
             }
+        }
+
+        private void RepeatPlay(PlayerRepeatMode playerRepeatMode)
+        {
+            switch(playerRepeatMode)
+            {
+                case PlayerRepeatMode.PlayNext:
+                    PlayNextVideo();
+                    break;
+                case PlayerRepeatMode.PlayRandom:
+                    PlayRandomVideo();
+                    break;
+                case PlayerRepeatMode.SingleRepeat:
+                    PlayCurrentVideo();
+                    break;
+            }
+        }
+
+        private void PlayNextVideo()
+        {
+            if(list_Video.SelectedIndex < playList.Count)
+            {
+                list_Video.SelectedIndex++;
+            }
+            else
+            {
+                list_Video.SelectedIndex = 0;
+            }
+           
+            list_Video_MouseDoubleClick(null, null);
+        }
+
+        private void PlayRandomVideo()
+        {
+
+        }
+
+        private void PlayCurrentVideo()
+        {
+
         }
 
         private void SetProgress(int value)
@@ -586,6 +634,7 @@ namespace ZtiPlayer
 
         private void EnablePlayerProgress()
         {
+            isActiveStop = false;
             slider_Progress.IsEnabled = true;
         }
 
@@ -756,7 +805,7 @@ namespace ZtiPlayer
         {
             if(this.list_Video.SelectedIndex != -1)
             {
-                VideoItem item = this.list_Video.SelectedItem as VideoItem;
+                VideoItem item = playList[list_Video.SelectedIndex];
                 if(item != null)
                 {
                     Open(item);
@@ -790,6 +839,7 @@ namespace ZtiPlayer
 
         private void btn_Stop_Click(object sender, RoutedEventArgs e)
         {
+            isActiveStop = true;
             StopPlay();
         }
 
@@ -926,9 +976,7 @@ namespace ZtiPlayer
             if (index == -1)
                 return;
 
-            var list = list_Video.ItemsSource as List<VideoItem>;
-
-            if(list.Count > 0)
+            if(playList.Count > 0)
             {
                 RemovePlaylistRecord(index);
                 playList.RemoveAt(index);
