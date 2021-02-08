@@ -574,13 +574,14 @@ namespace ZtiPlayer
             }
         }
 
-        private void ScreenShot()
+        private string ScreenShot()
         {
             var fileName = System.IO.Path.Combine(ScreenShotSavePath,
                 System.IO.Path.GetFileNameWithoutExtension(CurrentVideoItem.Path) 
                 + DateTime.Now.ToString("HH_mm_ss") 
                 + ScreenShotExtension);
             player.SetConfig((int)PlayerConfig.SnapshotImage, fileName);
+            return fileName;
         }
 
         private void PlayNext()
@@ -928,6 +929,27 @@ namespace ZtiPlayer
         private void menu_Screenshot_Click(object sender, RoutedEventArgs e)
         {
             ScreenShot();
+        }
+
+        private void menu_ScreenshotClipboard_Click(object sender,RoutedEventArgs e)
+        {
+            var fileName = ScreenShot();
+
+            if (System.IO.File.Exists(fileName) == false)
+                return;
+
+            try
+            {
+                BitmapImage bi = new BitmapImage();
+                bi.BeginInit();
+                bi.UriSource = new Uri(fileName, UriKind.Absolute);
+                bi.EndInit();
+                Clipboard.SetImage(bi);
+            }
+            catch
+            {
+
+            }
         }
 
         private void ContextMenu_ContextMenuOpening(object sender, ContextMenuEventArgs e)
