@@ -34,10 +34,24 @@ namespace ZtiPlayer.Models
         ClipBlackbandEnable = 207,
 
         /// <summary>
+        /// horrizontal flip 1-flip , 0-do not flip
+        /// </summary>
+        ImageFlip_H = 302,
+
+        /// <summary>
+        /// vertical flip 1-flip, 0-do not flip
+        /// </summary>
+        ImageFlip_V = 303,
+
+        /// <summary>
+        /// rotate (0-360)
+        /// </summary>
+        ImageRotate = 304,
+
+        /// <summary>
         /// Picture alpha(0-255)
         /// </summary>
         PictureAlpha = 608,
-
 
         /// <summary>
         /// Screenshot

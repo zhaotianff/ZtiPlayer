@@ -46,6 +46,14 @@
                 <MenuItem Header="下一个" Name="menu_Next" Click="menu_Next_Click"/>
                 <MenuItem Header="上一个" Name="menu_Previous" Click="menu_Previous_Click"/>
             </MenuItem>
+
+            <MenuItem Header="画面旋转" ItemContainerStyle="{StaticResource StyleMenuItem}">
+                <MenuItem Header="水平旋转" Click="menu_HorFlip_Click" Style="{StaticResource StyleMenuItem}"/>
+                <MenuItem Header="垂直旋转" Click="menu_VerFlip_Click" Style="{StaticResource StyleMenuItem}"/>
+                <MenuItem Header="顺时针旋转90°" Click="menu_RightRotate_Click" Style="{StaticResource StyleMenuItem}"/>
+                <MenuItem Header="逆时针旋转90°" Click="menu_LeftRotate_Click" Style="{StaticResource StyleMenuItem}"/>
+            </MenuItem>
+
             <MenuItem Header="播放速度" ItemContainerStyle="{StaticResource StyleMenuItem}">
                 <MenuItem Header="0.5" Click="menu_PlaySpeed_Click"/>
                 <MenuItem Header="1" Click="menu_PlaySpeed_Click"/>

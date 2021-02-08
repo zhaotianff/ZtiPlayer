@@ -499,7 +499,11 @@ namespace ZtiPlayer
 
                 if (isActiveStop == false)
                 {
-                    RepeatPlay(playerSetting.RepeatMode);
+                    //callback 
+                    //need ui thread
+                    Task.Factory.StartNew(()=> {
+                        RepeatPlay(playerSetting.RepeatMode);
+                    },new System.Threading.CancellationToken(),TaskCreationOptions.None,TaskScheduler.FromCurrentSynchronizationContext()); 
                 }
             }
         }
@@ -509,7 +513,7 @@ namespace ZtiPlayer
             switch(playerRepeatMode)
             {
                 case PlayerRepeatMode.PlayNext:
-                    PlayNextVideo();
+                    PlayNext();
                     break;
                 case PlayerRepeatMode.PlayRandom:
                     PlayRandomVideo();
@@ -520,28 +524,18 @@ namespace ZtiPlayer
             }
         }
 
-        private void PlayNextVideo()
-        {
-            if(list_Video.SelectedIndex < playList.Count)
-            {
-                list_Video.SelectedIndex++;
-            }
-            else
-            {
-                list_Video.SelectedIndex = 0;
-            }
-           
-            list_Video_MouseDoubleClick(null, null);
-        }
-
         private void PlayRandomVideo()
         {
-
+            Random r = new Random();
+            var index = r.Next(0, playList.Count);
+            var videoItem = playList[index];
+            Open(videoItem);
+            list_Video.SelectedIndex = index;
         }
 
         private void PlayCurrentVideo()
         {
-
+            list_Video_MouseDoubleClick(null, null);
         }
 
         private void SetProgress(int value)
@@ -774,6 +768,51 @@ namespace ZtiPlayer
 
             System.Diagnostics.Process.Start("explorer","/select, " + path);
         }
+
+        private void SetPlayerConfig(AxAPlayer3Lib.AxPlayer axPlayer, PlayerConfig playerConfig,string value)
+        {
+            if (axPlayer == null)
+                return;
+
+            axPlayer.SetConfig((int)playerConfig, value);
+        }
+
+        private string GetPlayerConfig(AxAPlayer3Lib.AxPlayer axPlayer,PlayerConfig playerConfig)
+        {
+            if (axPlayer == null)
+                return "";
+
+
+            return axPlayer.GetConfig((int)playerConfig);         
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="axPlayer"></param>
+        /// <param name="direction">0-Counterclockwise 1-Clockwise</param>
+        private void SetVideoRotation(AxAPlayer3Lib.AxPlayer axPlayer, RotateDirection direction)
+        {
+            var angle = GetPlayerConfig(axPlayer, PlayerConfig.ImageRotate);
+
+            var nAngle = 0;
+            if (int.TryParse(angle, out nAngle))
+            {
+                if(direction == RotateDirection.Counterclockwise)
+                {
+                    nAngle -= 90;
+                }
+                else
+                {
+                    nAngle += 90;
+                }
+                
+                if (Math.Abs(nAngle) == 360)
+                    nAngle = 0;
+
+                SetPlayerConfig(player, PlayerConfig.ImageRotate, nAngle.ToString());
+            }
+        }
         #endregion
 
         #region Event
@@ -932,6 +971,37 @@ namespace ZtiPlayer
         private void menu_Previous_Click(object sender, RoutedEventArgs e)
         {
             PlayPrevious();
+        }
+
+        private void menu_HorFlip_Click(object sender, RoutedEventArgs e)
+        {
+            var horFlipFlag =  GetPlayerConfig(player,PlayerConfig.ImageFlip_H);
+
+            if (string.IsNullOrEmpty(horFlipFlag) || horFlipFlag == "0")
+                horFlipFlag = "1";
+
+            SetPlayerConfig(player,PlayerConfig.ImageFlip_H, horFlipFlag);
+        }
+
+        private void menu_VerFlip_Click(object sender, RoutedEventArgs e)
+        {
+            var verFlipFlag = GetPlayerConfig(player, PlayerConfig.ImageFlip_V);
+
+            if (string.IsNullOrEmpty(verFlipFlag) || verFlipFlag == "0")
+                verFlipFlag = "1";
+
+            SetPlayerConfig(player, PlayerConfig.ImageFlip_V, verFlipFlag);
+        }
+
+        private void menu_RightRotate_Click(object sender, RoutedEventArgs e)
+        {
+            SetVideoRotation(player, RotateDirection.Clockwise);
+        }
+
+
+        private void menu_LeftRotate_Click(object sender, RoutedEventArgs e)
+        {
+            SetVideoRotation(player, RotateDirection.Counterclockwise);
         }
 
         private void menu_Stop_Click(object sender, RoutedEventArgs e)

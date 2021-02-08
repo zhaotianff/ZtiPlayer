@@ -12,6 +12,13 @@ namespace ZtiPlayer.Models
         PlayNext = 1,
         PlayRandom = 2
     }
+
+    public enum RotateDirection
+    {
+        Counterclockwise = 0,
+        Clockwise = 1,
+    }
+
     public class PlayerSetting
     {
         public PlayerRepeatMode RepeatMode { get; set; } = PlayerRepeatMode.PlayNext;
