@@ -184,7 +184,7 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <Slider Margin="10,10,10,15" Height="5" Name="slider_Progress" Minimum="0" VerticalAlignment="Bottom" TickFrequency="1" Style="{StaticResource SliderStyle}"  Thumb.DragCompleted="slider_Progress_DragCompleted"></Slider>
+                <Slider Margin="10,10,10,15" Height="7" Name="slider_Progress" Minimum="0" VerticalAlignment="Bottom" TickFrequency="1" Style="{StaticResource SliderStyle}"  Thumb.DragCompleted="slider_Progress_DragCompleted"></Slider>
                 <Label HorizontalAlignment="Right" VerticalAlignment="Bottom"  Name="lbl_Duration" FontFamily="{StaticResource default}" Margin="0,0,0,-10"/>
                 <Label HorizontalAlignment="Left"  VerticalAlignment="Bottom"  Name="lbl_Elapsed" FontFamily="{StaticResource default}" Margin="0,0,0,-10"/>
                 <Label HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="lbl_BufferState" FontFamily="{StaticResource default}" Margin="80,0,0,-10"/>
