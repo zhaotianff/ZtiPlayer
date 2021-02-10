@@ -1,0 +1,23 @@
+﻿<Window x:Class="ZtiPlayer.Downloader"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZtiPlayer"
+        mc:Ignorable="d"
+        Title="Downloader" Height="280" Width="500" Style="{StaticResource newStyle}" ResizeMode="NoResize" FontFamily="{StaticResource muyao}" ShowInTaskbar="False">
+    <Window.Background>
+        <ImageBrush ImageSource="background.jpg" Stretch="UniformToFill"/>
+    </Window.Background>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Label Content="正在下载" FontSize="15"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,10"/>
+        <Label Content="{Binding ElementName=bar_Progress,Path=Value}" FontSize="13" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="110,10" Name="lbl_Progress"/>
+
+        <ProgressBar  VerticalAlignment="Top" Minimum="0" Maximum="100" Grid.Row="1" Margin="30,10" Height="15" Style="{StaticResource ProgressBarStyle}" x:Name="bar_Progress"/>
+    </Grid>
+</Window>
