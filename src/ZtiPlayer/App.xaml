@@ -1,0 +1,21 @@
+﻿<Application x:Class="ZtiPlayer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Str/zh-cn.xaml"/>
+
+                <ResourceDictionary Source="Style/WindowStyle.xaml"/>
+                <ResourceDictionary Source="Themes/Generic.xaml"/>
+                
+                <ResourceDictionary Source="Style/ScrollViewerStyle.xaml"/>
+                <ResourceDictionary Source="Style/ListBoxItem.xaml"/>
+                <ResourceDictionary Source="Style/FontStyle.xaml"/>
+                <ResourceDictionary Source="Style/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="Style/MenuStyle.xaml"/>
+                <ResourceDictionary Source="Style/SliderStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
