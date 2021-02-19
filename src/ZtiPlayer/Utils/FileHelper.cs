@@ -37,5 +37,21 @@ namespace ZtiPlayer.Utils
         {
             return System.IO.Directory.GetFiles(dir);
         }
+
+        public static bool CreateDirectory(string dir)
+        {
+            try
+            {
+                if (System.IO.Directory.Exists(dir) == false)
+                {
+                    System.IO.Directory.CreateDirectory(dir);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

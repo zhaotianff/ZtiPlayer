@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ZtiPlayer.Utils;
 
 namespace ZtiPlayer
 {
@@ -21,8 +22,11 @@ namespace ZtiPlayer
     /// </summary>
     public partial class Downloader : Window
     {
+        private const string CodecDirName = "codecs";
         private const string DecodePackUrl = "http://aplayer.open.xunlei.com/codecs.zip";
-
+        private static readonly string Temp = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "temp");
+        private static readonly string TempFileName = System.IO.Path.Combine(Temp, "dd.zip");
+        private static readonly string CodecDirPath = System.IO.Path.Combine(Environment.CurrentDirectory, CodecDirName);
 
         public Downloader()
         {
@@ -61,12 +65,10 @@ namespace ZtiPlayer
 
             try
             {
-                var temp = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"temp");
-                var tempFileName = System.IO.Path.Combine(temp, "dd.zip");
                 WebClient webClient = new WebClient();
                 webClient.DownloadProgressChanged += WebClient_DownloadProgressChanged;
                 webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
-                webClient.DownloadFileAsync(new Uri(DecodePackUrl), tempFileName);
+                webClient.DownloadFileAsync(new Uri(DecodePackUrl), TempFileName);
             }
             catch
             {
@@ -75,8 +77,26 @@ namespace ZtiPlayer
             
         }
 
+        private void ExtractPackFile()
+        {
+            try
+            {
+                FileHelper.CreateDirectory(CodecDirPath);
+
+                if(FileHelper.GetFiles(CodecDirPath).Length > 0)
+                        return;
+                    
+                System.IO.Compression.ZipFile.ExtractToDirectory(TempFileName, CodecDirPath);
+            }
+            catch
+            {
+
+            }
+        }
+
         private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
+            ExtractPackFile();
             this.Close();
         }
 
