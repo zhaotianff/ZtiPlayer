@@ -24,9 +24,13 @@ Powered by aplyer engine(http://aplayer.open.xunlei.com)
 
 If you want to use for business,you must get the authorization(**free**)[License](http://aplayer.open.xunlei.com/%E8%BF%85%E9%9B%B7%20APlayer%20%E6%8E%88%E6%9D%83%E5%8D%8F%E8%AE%AE.doc)
 
-## Install
-~~Run [Install.ps1](Install.ps1) with Administrator to Install decoding pack and register player library~~  
-Run ZtiPlayer.exe directly(No need to register APlayer)
+## Build
+**Prerequisite**    
+register APlayer_3.9.8.785.dll  
+
+**Environment**  
+.Net Framework 4.5+   
+Visual Studio 2015+
 
 ## Features
 * Play local multimedia files,supported format 
