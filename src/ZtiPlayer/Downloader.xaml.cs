@@ -26,7 +26,7 @@ namespace ZtiPlayer
         private const string DecodePackUrl = "http://aplayer.open.xunlei.com/codecs.zip";
         private static readonly string Temp = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "temp");
         private static readonly string TempFileName = System.IO.Path.Combine(Temp, "dd.zip");
-        private static readonly string CodecDirPath = System.IO.Path.Combine(Environment.CurrentDirectory, CodecDirName);
+        private static readonly string CodecDirPath = Environment.CurrentDirectory;
 
         public Downloader()
         {
@@ -60,7 +60,7 @@ namespace ZtiPlayer
             if(checkResult == false)
             {
                 MessageBox.Show("请检查网络连接","提示信息");
-                return;
+                this.DialogResult = false;
             }
 
             try
@@ -73,6 +73,7 @@ namespace ZtiPlayer
             catch
             {
                 MessageBox.Show("下载错误，请稍后重试");
+                this.DialogResult = false;
             }
             
         }
@@ -90,14 +91,14 @@ namespace ZtiPlayer
             }
             catch
             {
-
+                this.DialogResult = false;
             }
         }
 
         private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             ExtractPackFile();
-            this.Close();
+            this.DialogResult = true;
         }
 
         private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)

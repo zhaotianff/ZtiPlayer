@@ -177,7 +177,7 @@ namespace ZtiPlayer
             player.Dock = System.Windows.Forms.DockStyle.Fill;
             player.OnMessage += (a, b) => { MessageHandler(b.nMessage, b.lParam, b.wParam); };
             player.OnBuffer += (a, b) => { Buffering(b.nPercent); };
-            player.OnDownloadCodec += (a, b) => { DownloadCodecDialog(b.strCodecPath); };
+            player.OnDownloadCodec += (a, b) => { ShowDownloadCodecDialog(b.strCodecPath); };
             player.OnOpenSucceeded += (a, b) => { OpenVideoSuccess(); };
             player.OnStateChanged += (a, b) => { HandleStateChange(b.nOldState, b.nNewState); };
             panel.Controls.Add(player);
@@ -296,10 +296,16 @@ namespace ZtiPlayer
             });
         }
 
-        private void DownloadCodecDialog(string codec)
+        private void ShowDownloadCodecDialog(string codec)
         {
-            MessageBox.Show(codec);
-            player.Close();
+            //MessageBox.Show(codec);
+            //player.Close();
+            Downloader downloader = new Downloader();
+            downloader.StartDownloadDecodePack();
+            if(downloader.ShowDialog() == true)
+            {
+                //player.Play();
+            }
         }
 
         private void BrowseLocalFile()

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZtiPlayer"
         mc:Ignorable="d"
-        Title="Downloader" Height="280" Width="500" Style="{StaticResource newStyle}" ResizeMode="NoResize" FontFamily="{StaticResource muyao}" ShowInTaskbar="False">
+        Title="Downloader" Height="280" Width="500" Style="{StaticResource newStyle}" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" FontFamily="{StaticResource muyao}" ShowInTaskbar="False">
     <Window.Background>
         <ImageBrush ImageSource="background.jpg" Stretch="UniformToFill"/>
     </Window.Background>
