@@ -2,7 +2,7 @@
 
 <p align="center">
 <a href="https://github.com/zhaotianff/ZtiPlayer" target="_blank">
-<img align="center" alt="ZtiPlayer" src="Src/ZtiPlayer/Icon/logo.png" />
+<img align="center" alt="ZtiPlayer" src="src/ZtiPlayer/Icon/logo.png" />
 </a>
 </p>
 <p align="center">
