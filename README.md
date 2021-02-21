@@ -26,7 +26,7 @@ If you want to use for business,you must get the authorization(**free**)[License
 
 ## Build
 **Prerequisite**    
-Register APlayer_3.9.8.785.dll
+Register APlayer_3.12.1.865.dll
 
 **Environment**  
 .Net Framework 4.5+   
