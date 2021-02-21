@@ -15,8 +15,8 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Label Content="正在下载" FontSize="15"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,10"/>
-        <Label Content="{Binding ElementName=bar_Progress,Path=Value}" FontSize="13" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="110,10" Name="lbl_Progress"/>
+        <Label Content="正在下载完整解码包" FontSize="15"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,10" Name="lbl_Status"/>
+        <Label Content="{Binding ElementName=bar_Progress,Path=Value}" FontSize="13" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="180,10" Name="lbl_Progress"/>
 
         <ProgressBar  VerticalAlignment="Top" Minimum="0" Maximum="100" Grid.Row="1" Margin="30,10" Height="15" Style="{StaticResource ProgressBarStyle}" x:Name="bar_Progress"/>
     </Grid>

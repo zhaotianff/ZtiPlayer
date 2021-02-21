@@ -22,11 +22,10 @@ namespace ZtiPlayer
     /// </summary>
     public partial class Downloader : Window
     {
-        private const string CodecDirName = "codecs";
         private const string DecodePackUrl = "http://aplayer.open.xunlei.com/codecs.zip";
+        private const string TestUrl = "https://www.baidu.com";
         private static readonly string Temp = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "temp");
         private static readonly string TempFileName = System.IO.Path.Combine(Temp, "dd.zip");
-        private static readonly string CodecDirPath = Environment.CurrentDirectory;
 
         public Downloader()
         {
@@ -82,12 +81,13 @@ namespace ZtiPlayer
         {
             try
             {
-                FileHelper.CreateDirectory(CodecDirPath);
+                FileHelper.CreateDirectory(FileHelper.CodecDirPath);
 
-                if(FileHelper.GetFiles(CodecDirPath).Length > 0)
-                        return;
+                if (FileHelper.GetFiles(FileHelper.CodecDirPath).Length > 0)
+                    this.DialogResult = false;
                     
-                System.IO.Compression.ZipFile.ExtractToDirectory(TempFileName, CodecDirPath);
+                System.IO.Compression.ZipFile.ExtractToDirectory(TempFileName, FileHelper.CodecDirPath);
+                this.DialogResult = true;
             }
             catch
             {
@@ -98,7 +98,6 @@ namespace ZtiPlayer
         private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             ExtractPackFile();
-            this.DialogResult = true;
         }
 
         private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -113,7 +112,7 @@ namespace ZtiPlayer
             try
             {
                 HttpClient httpClient = new HttpClient();
-                var response = await httpClient.GetAsync(DecodePackUrl);
+                var response = await httpClient.GetAsync(TestUrl);
                 return response.IsSuccessStatusCode;
             }
             catch

@@ -8,6 +8,9 @@ namespace ZtiPlayer.Utils
 {
     public class FileHelper
     {
+        public static readonly string CodecDirName = "codecs";
+        public static readonly string CodecDirPath = Environment.CurrentDirectory;      
+
         public static List<string> GetAllFiles(string dir)
         {
             var list = new List<string>();
@@ -29,7 +32,6 @@ namespace ZtiPlayer.Utils
                     }
                 }
             }
-
             return list;
         }
 

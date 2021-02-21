@@ -298,13 +298,16 @@ namespace ZtiPlayer
 
         private void ShowDownloadCodecDialog(string codec)
         {
-            //MessageBox.Show(codec);
-            //player.Close();
+            if (FileHelper.GetFiles(FileHelper.CodecDirPath).Length > 0)
+                return;
+
             Downloader downloader = new Downloader();
             downloader.StartDownloadDecodePack();
             if(downloader.ShowDialog() == true)
             {
-                //player.Play();
+                Task.Factory.StartNew(()=> {
+                    Open(playList[CurrentSelectedIndex]);
+                },new System.Threading.CancellationToken(),TaskCreationOptions.None,TaskScheduler.FromCurrentSynchronizationContext()); 
             }
         }
 
@@ -363,6 +366,9 @@ namespace ZtiPlayer
             this.player.Open(item.Path);
             this.player.Play();
             EnablePlayerProgress();
+
+            //TODO
+            UpdatePlayList();
         }
 
         private void ShowOpenUrlDialog()
@@ -423,10 +429,7 @@ namespace ZtiPlayer
 
             this.btn_Pause.SetValue(ImageButton.ImageProperty, "../Icon/pause.png");
 
-            HideNavigationButton();
-
-            //TODO
-            UpdatePlayList();           
+            HideNavigationButton();          
         }
 
         private void ClearPlayList()
