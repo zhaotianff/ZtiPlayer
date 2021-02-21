@@ -109,10 +109,9 @@ namespace ZtiPlayer
 
         private void CloseWindow(object sender, ExecutedRoutedEventArgs e)
         {
-            //this.Close();     
-
+            this.Close();     
             //TODO thread still running after cancel download task
-            Environment.Exit(0);
+            //Environment.Exit(0);
         }
 
         private void MaximizeWindow(object sender, ExecutedRoutedEventArgs e)
