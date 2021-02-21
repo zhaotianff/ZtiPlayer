@@ -27,6 +27,9 @@ namespace ZtiPlayer
         private static readonly string Temp = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "temp");
         private static readonly string TempFileName = System.IO.Path.Combine(Temp, "dd.zip");
 
+        WebClient webClient;
+        Task task;
+
         public Downloader()
         {
             InitializeComponent();
@@ -44,8 +47,8 @@ namespace ZtiPlayer
         {
             if(MessageBox.Show("是否取消下载?","提示信息",MessageBoxButton.YesNo,MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                this.DialogResult = false;
-                this.Close();
+                webClient.CancelAsync();
+                FileHelper.RemoveFile(TempFileName);
             }
         }
 
@@ -64,21 +67,29 @@ namespace ZtiPlayer
 
             try
             {
-                WebClient webClient = new WebClient();
+                webClient = new WebClient();
                 webClient.DownloadProgressChanged += WebClient_DownloadProgressChanged;
                 webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
-                webClient.DownloadFileAsync(new Uri(DecodePackUrl), TempFileName);
+                task =  webClient.DownloadFileTaskAsync(new Uri(DecodePackUrl), TempFileName);
+                await task;
             }
-            catch
+            catch(Exception ex)
             {
-                MessageBox.Show("下载错误，请稍后重试");
+                if (task.IsFaulted == false)
+                {
+                    MessageBox.Show("下载错误，" + ex.Message);
+                }
+
+                //TODO disconnect vpn
                 this.DialogResult = false;
-            }
-            
+            }            
         }
 
-        private void ExtractPackFile()
+        private void ExtractPackFile(bool isCancelled)
         {
+            if (isCancelled == true)
+                return;
+
             try
             {
                 FileHelper.CreateDirectory(FileHelper.CodecDirPath);
@@ -97,7 +108,7 @@ namespace ZtiPlayer
 
         private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
-            ExtractPackFile();
+            ExtractPackFile(e.Cancelled);
         }
 
         private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)

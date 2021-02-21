@@ -55,5 +55,21 @@ namespace ZtiPlayer.Utils
                 return false;
             }
         }
+
+        public static bool RemoveFile(string file)
+        {
+            try
+            {
+                if(System.IO.File.Exists(file))
+                {
+                    System.IO.File.Delete(file);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
