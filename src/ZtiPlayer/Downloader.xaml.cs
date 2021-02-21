@@ -80,15 +80,18 @@ namespace ZtiPlayer
                     MessageBox.Show("下载错误，" + ex.Message);
                 }
 
-                //TODO disconnect vpn
-                this.DialogResult = false;
+                if(WinAPI.FindWindow(null, "Downloader") != IntPtr.Zero)
+                    this.DialogResult = false;
             }            
         }
 
         private void ExtractPackFile(bool isCancelled)
         {
             if (isCancelled == true)
+            {
+                webClient.Dispose();
                 return;
+            }
 
             try
             {

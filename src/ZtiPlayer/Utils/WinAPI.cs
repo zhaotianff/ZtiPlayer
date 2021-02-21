@@ -66,5 +66,8 @@ namespace ZtiPlayer.Utils
 
         [DllImport("User32.dll")]
         public static extern int GetKeyNameText(int lParam,StringBuilder lpString,int cchSize);
+
+        [DllImport("User32.dll")]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
     }
 }
