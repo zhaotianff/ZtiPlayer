@@ -40,8 +40,14 @@
     <ApplicationIcon>Icon\logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AxInterop.APlayer3Lib">
-      <HintPath>..\..\..\GetImage\ZtiPlayer\bin\Debug\AxInterop.APlayer3Lib.dll</HintPath>
+    <Reference Include="AxInterop.APlayer3Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\AxInterop.APlayer3Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.APlayer3Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>bin\Debug\Interop.APlayer3Lib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -225,6 +231,9 @@
     <Resource Include="Icon\fullscreen.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="background.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <COMReference Include="APlayer3Lib">
       <Guid>{97830570-35FE-4195-83DE-30E79B718713}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -234,9 +243,6 @@
       <Isolated>True</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="background.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

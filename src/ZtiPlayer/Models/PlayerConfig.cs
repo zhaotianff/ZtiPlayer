@@ -10,6 +10,8 @@ namespace ZtiPlayer.Models
     {
         EngineLibVersion = 1,
 
+        CodecsPath = 2,
+
         /// <summary>
         /// Silent
         /// </summary>

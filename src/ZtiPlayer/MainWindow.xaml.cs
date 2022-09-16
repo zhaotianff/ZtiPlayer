@@ -188,6 +188,9 @@ namespace ZtiPlayer
             //Volume
             this.slider_Volume.Value = player.GetVolume();
 
+            //codec path
+            player.SetConfig((int)PlayerConfig.CodecsPath, System.IO.Path.Combine(Environment.CurrentDirectory,"codecs"));
+
             DisablePlayerProgress();
         }
 
